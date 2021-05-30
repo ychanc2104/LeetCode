@@ -1,3 +1,5 @@
+
+
 def swap(data, i, j):
     data[i], data[j] = data[j], data[i]
     return data
@@ -7,7 +9,6 @@ def max_root(data):
     return n//2-1
 
 def heapify(data, n, i):
-    # print(data)
     if i >= n:
         return None
     max = i
@@ -27,22 +28,23 @@ def max_heapify(data):
     n = len(data)
     roots = max_root(data)
     for i in range(roots+1):
-        print(data)
         heapify(data, n, roots-i)
 
 def heap_sort(data):
     data_sort = []
-    for i in range(len(data)):
-        max_heapify(data)
-        swap(data, 0, -1)
-        data_sort += [data[-1]]
-        data.remove(data[-1])
+    data_copy = data.copy()
+    for i in range(len(data_copy)):
+        max_heapify(data_copy)
+        swap(data_copy, 0, -1)
+        data_sort += [data_copy[-1]]
+        data_copy.remove(data_copy[-1])
     return data_sort
 
 
 
+if __name__ == '__main__':
 
-data = [38,14, 57, 59, 52, 19]
-# data = [4, 2, 3, 5, 1, 10]
+    data = [38,14, 57, 59, 52, 19]
+    # data = [4, 2, 3, 5, 1, 10]
 
-data_sort = heap_sort(data)
+    data_sort = heap_sort(data)

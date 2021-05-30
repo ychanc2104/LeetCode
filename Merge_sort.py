@@ -1,11 +1,12 @@
-def MergeSort(data):
+
+def merge_sort(data):
     if len(data) < 2:
         return data
     n = len(data)
     mid = n // 2
     ## Devide
-    L = MergeSort(data[:mid])
-    R = MergeSort(data[mid:])
+    L = merge_sort(data[:mid])
+    R = merge_sort(data[mid:])
     ## Merge
     data_sort = []
     i, j = 0, 0
@@ -24,10 +25,10 @@ def MergeSort(data):
         elif j == r: ## if R reach end, consider L only
             data_sort += [L[i]]
             i += 1
-        print(data_sort)
     return data_sort
 
 
+if __name__ == '__main__':
 
-data = [38,14, 57, 59, 52, 19, 1, 2]
-data_sort = MergeSort(data)
+    data = [38,14, 57, 59, 52, 19, 1, 2]
+    data_sort = merge_sort(data)
