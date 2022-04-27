@@ -5,10 +5,16 @@ class TreeNode:
         self.left = None
         self.right = None
 
+
+## definition
+# 1. left-node < root
+# 2. right-node > root
+# 3. key/value can't be the same
 class BinarySearchTree(TreeNode):
+
     def insert(self, val):
         if self.val!=None:
-            if val <= self.val:
+            if val < self.val:
                 if self.left==None:
                     self.left = BinarySearchTree(val)
                 else:
@@ -23,6 +29,17 @@ class BinarySearchTree(TreeNode):
 
     def __repr__(self):
         return f"node value is {self.val}"
+
+    def search(self, val):
+            if val == self.val:
+                return True
+            elif self.left and val < self.val:
+                return self.left.search(val)
+            elif self.right and val > self.val:
+                return self.right.search(val)
+            else:
+                return False
+
 
     def print_tree_dfs(self):
         print(self.val)
