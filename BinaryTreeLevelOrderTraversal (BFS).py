@@ -35,5 +35,17 @@ class Solution:
             level = [l for LR in leafs for l in LR if l]
         return results
 
+    def levelOrder3(self, root):
+        ans = []
+        levels = [root]
+        while levels and root:
+            ## append ans
+            ans.append([node.val for node in levels if node])
+            ## collecting leafs
+            leafs = [[node.left, node.right] for node in levels if node]
+            ## deconstruct leafs as levels next round
+            levels = [node for LR in leafs for node in LR if node]
+        return ans
+
 
 
