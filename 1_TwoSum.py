@@ -22,8 +22,14 @@ class Solution:
                     output = [i, i+j+1]
                     return output
             i += 1
-
-
+    ## T: O(n)
+    def twoSum_3(self, nums, target):
+        memo = {}
+        for i,num in enumerate(nums):
+            if num not in memo:
+                memo[target-num] = i
+            else:
+                return [memo[num], i]
 nums = [3,2,4,1,9,7]
 target = 11
 
