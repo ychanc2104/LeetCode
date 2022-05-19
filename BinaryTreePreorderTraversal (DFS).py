@@ -4,6 +4,8 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
+
+## order: node => left => right
 class Solution:
     ## iterative
     def preorderTraversal(self, root):

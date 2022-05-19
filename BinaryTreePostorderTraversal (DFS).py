@@ -4,6 +4,9 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
+
+## order: left => right => node
+
 class Solution:
     ## iterative method
     def postorderTraversal(self, root):
