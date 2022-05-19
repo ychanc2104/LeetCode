@@ -6,6 +6,8 @@
 #         self.right = right
 
 ## order: node => left => right
+# time: O(n), Space: worst, O(n), average, O(logn) (height of binary tree or in balanced tree)
+
 class Solution:
     ## iterative
     def preorderTraversal(self, root):

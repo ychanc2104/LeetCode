@@ -7,6 +7,8 @@
 
 ## order: left => right => node
 
+# time: O(n), Space: worst, O(n), average, O(logn) (height of binary tree or in balanced tree)
+
 class Solution:
     ## iterative method
     def postorderTraversal(self, root):
