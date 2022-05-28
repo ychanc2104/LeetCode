@@ -29,10 +29,15 @@ def findMin2(nums) -> int:
         mid = (L + R) // 2
         # print(L, mid, R, res)
         if nums[mid] > nums[R]:
+            # to the right
             L = mid + 1
-        elif nums[mid] <= nums[R]:  # min in the left or self
+        # it is possible for the mid index to store a smaller
+        else:  # min in the left or self
+            # let R to mid instead mid-1 to store mid
             R = mid
+
         # print(L, mid, R, res)
+    # or return nums[R]
     return nums[L]
 
 nums = [3,4,5,1,2]
