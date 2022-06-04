@@ -25,7 +25,7 @@ class Solution:
         return ans
 
     ## recursive
-    def preorderTraversal(self, root):
+    def preorderTraversal2(self, root):
         ## dfs
         ans = []
         if root:
@@ -33,3 +33,15 @@ class Solution:
             ans.extend(self.preorderTraversal(root.left))
             ans.extend(self.preorderTraversal(root.right))
         return ans
+
+    ## recursive
+    def preorderTraversal3(self, root):
+        # root => left => right
+        res = []
+        def dfs(root):
+            if root:
+                res.append(root.val)
+                dfs(root.left)
+                dfs(root.right)
+        dfs(root)
+        return res
