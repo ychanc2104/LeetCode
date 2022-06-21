@@ -15,6 +15,20 @@ def isValid(s):
     else:
         return False
 
+# O(n)
+def isValid2(s):
+    stack = []
+    check_dict = {'[': ']', '(': ')', '{': '}'}
+    for b in s:
+        if b in check_dict:
+            stack.append(b)
+        # find pair of parentheses
+        elif stack and b==check_dict[stack[-1]]:
+            stack.pop()
+        else: return False
+    return True if not stack else False
+
+
 s= '({})[]{}'
 
 print(isValid(s))
