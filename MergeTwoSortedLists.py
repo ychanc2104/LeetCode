@@ -33,6 +33,21 @@ def mergeTwoLists(list1, list2):
     temp.next = list1 if list1 else list2 ## append remainings
     return merged_list.next
 
+# recursive method
+def mergeTwoLists2(list1, list2):
+    # escape for remaining list1 or list2
+    if not (list1 and list2):
+        return list1 or list2
+    # top-down
+    if list1.val <= list2.val:
+        # list1.next assign to remaining list1 or list2
+        list1.next = mergeTwoLists2(list1.next, list2)
+        return list1
+    else:
+        list2.next = mergeTwoLists2(list1, list2.next)
+        return list2
+
+
 
 list1 = build_ListNode([1,2,4])
 list2 = build_ListNode([1,3,4,7,8])
