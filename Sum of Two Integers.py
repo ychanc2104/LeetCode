@@ -48,13 +48,13 @@ def getSum2(a: int, b: int) -> int:
  00000010 (2)
  00000001 (1)
  11111110 (XOR) 
-100000001 (~) and choose first 8 bit
+ 00000001 (~) USE ~ TO GET NEGATIVE in python
 
  11111111 (-1)
  11111110 (-2)
  11111101 (-3) (ans in JAVA, but 2**8 - 2 in python)
  00000010 (XOR)
-111111101 (~) and choose first 8 bit
+ 11111101 (~) USE ~ TO GET NEGATIVE in python
 """
 
 
