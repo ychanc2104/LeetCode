@@ -32,3 +32,10 @@ def invertTree3(root):
     if root:
         root.left, root.right = invertTree3(root.right), invertTree3(root.left)
     return root
+
+# recursive
+def invertTree4(root):
+    if not root:
+        return root
+    root.left, root.right = invertTree4(root.right), invertTree4(root.left)
+    return root
