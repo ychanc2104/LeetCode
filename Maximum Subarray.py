@@ -62,6 +62,12 @@ def maxSubArray6(nums):
         print(x, current_sum, best_sum)
     return best_sum
 
+def maxSubArray7(nums) -> int:
+    res = M = nums[0]
+    for num in nums[1:]:
+        M = max(M + num, num)
+        res = max(res, M)
+    return res
 
 nums = [-2,1,-3,4,-1,2,1,-5,4]
 
