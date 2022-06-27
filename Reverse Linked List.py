@@ -33,3 +33,13 @@ class Solution:
             head = temp
 
         return pre
+
+
+    def reverseList3(self, head):
+        res = None
+        while head:
+            temp = head.next
+            head.next = res
+            res = head
+            head = temp
+        return res
