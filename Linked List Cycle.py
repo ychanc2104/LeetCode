@@ -21,3 +21,13 @@ def hasCycle(head) -> bool:
         return True
 
     return False
+
+# first thought, TC: O(N), SC: O(1)
+def hasCycle2(head) -> bool:
+    slow = fast = head
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+        if slow==fast:
+            return True
+    return False
