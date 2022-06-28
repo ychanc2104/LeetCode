@@ -49,15 +49,35 @@ class BinarySearchTree(TreeNode):
 #         self.val = val
 #         self.left = left
 #         self.right = right
-class Solution:
-    def maxDepth(self, root) -> int:
-        depth = 0
-        if root == None:
-            return depth
-        else:
-            return max(self.maxDepth(root.left), self.maxDepth(root.right))+1
+def maxDepth(root) -> int:
+    depth = 0
+    if root == None:
+        return depth
+    else:
+        return max(maxDepth(root.left), maxDepth(root.right))+1
 
+# dfs, TC:O(n), SC:O(h)
+def maxDepth2(root) -> int:
 
+    def dfs(root):
+        if not root:
+            return 0
+        return max(dfs(root.left), dfs(root.right)) + 1
+
+    return dfs(root)
+
+# bfs, TC:O(n), SC:O(n)
+def maxDepth3(root) -> int:
+    depth = 0
+    queue = [(root, depth)] if root else []
+    while queue:
+        node, depth = queue.pop(0)
+        depth += 1
+        if node.left:
+            queue.append((node.left, depth))
+        if node.right:
+            queue.append((node.right, depth))
+    return depth
 
 bst = BinarySearchTree()
 data = [10,9,5,15,20,12]
@@ -66,4 +86,4 @@ for d in data:
     bst.insert(d)
 
 
-max_depth = Solution().maxDepth(bst)
+max_depth = maxDepth(bst)
