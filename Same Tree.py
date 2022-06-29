@@ -30,3 +30,15 @@ def isSameTree2(p, q) -> bool:
         return False
     else:
         return True
+
+# recursive
+def isSameTree3(p, q) -> bool:
+    if not p and not q:
+        return True
+    elif p and q:
+        if p.val == q.val:
+            return isSameTree3(p.left, q.left) and isSameTree3(p.right, q.right)
+        else:
+            return False
+    elif p or q:
+        return False
