@@ -20,3 +20,11 @@ def hammingWeight2(n: int) -> int:
         n = n&(n-1)
         ans += 1
     return ans
+
+
+def hammingWeight3(n: int) -> int:
+    count = 0
+    while n != 0:
+        count += n & 1
+        n = n >> 1
+    return count
