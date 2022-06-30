@@ -74,6 +74,46 @@ def insert4(intervals, I):
             I[1] = max(I[1], y)
     return res + [I] + intervals[i + 1:]
 
+## T:O(n), SC:O(1)
+def insert5(intervals, newInterval):
+    res = []
+    L, R = newInterval
+    isInsert = False
+    for s, e in intervals:
+        if s <= L <= e or s <= R <= e or (L <= s and R >= e):
+            # overlapping
+            L, R = min(s, L), max(e, R)
+        else:
+            # not overlapping
+            if not isInsert and s > L:
+                res.append([L, R])
+                isInsert = True
+            res.append([s, e])
+    # edge case for len(intervals)<=1
+    if not isInsert:
+        res.append([L, R])
+    return res
+
+
+## T:O(n), SC:O(1)
+def insert6(intervals, newInterval):
+    ## separate into three parts, left + merged newInterval + rest of intervals, put overlapping case to the 'else'
+    res = []
+    i = 0
+    for s, e in intervals:
+        if e < newInterval[0]:
+            # non-overlapping but smaller
+            res.append([s, e])
+        elif newInterval[1] < s:
+            # exceed
+            break
+        else:
+            # overlapping
+            newInterval[0] = min(newInterval[0], s)
+            newInterval[1] = max(newInterval[1], e)
+        i += 1
+    return res + [newInterval] + intervals[i:]
+
 intervals = [[1,2],[3,5],[6,7],[8,10],[12,16]]
 
 newInterval = [4,8]
