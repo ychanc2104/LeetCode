@@ -61,3 +61,32 @@ class Solution:
         memo = {}
         hashify(s)
         return (t.val, hashify(t.left), hashify(t.right)) in memo
+
+    def isSubtree4(self, root, subRoot) -> bool:
+
+        def isSameTree(p, q):
+            if p and q and p.val == q.val:
+                return isSameTree(p.left, q.left) and isSameTree(p.right, q.right)
+            elif not p and not q:
+                return True
+            else:
+                return False
+
+        if root and subRoot:
+            if root.val == subRoot.val and isSameTree(root, subRoot):
+                return True
+            else:
+                return self.isSubtree4(root.left, subRoot) or self.isSubtree4(root.right, subRoot)
+        else:
+            return False
+
+    # convert to string
+    def isSubtree5(self, root, subRoot) -> bool:
+        # ^4#^1#$$^2#$$([4,1,2])  ^3#^4#^1#$$^2#$$^5#$$ ([3,4,5,1,2])
+        # $ for None,
+        def convert(p):
+            return "^" + str(p.val) + "#" + convert(p.left) + convert(p.right) if p else "$"
+        s = convert(subRoot)
+        r = convert(root)
+        print(s, r)
+        return s in r
