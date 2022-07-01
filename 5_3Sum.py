@@ -77,6 +77,29 @@ def threeSum3(nums):
                 res.add((nums[memo[y][0]], nums[memo[y][1]], y))
     return res
 
+# O(n^2)
+def threeSum4(nums):
+    n = len(nums)
+    res = set()
+    # TC: O(nlogn)
+    nums.sort()
+    # TC:O(n^2) for two loops
+    for i in range(n):
+        if nums[i] > 0: break
+        if i == 0 or nums[i] != nums[i - 1]:
+            memo = {}
+            # TC:O(n)
+            for j in range(i + 1, n):
+                # TC:O(1)
+                if nums[j] not in memo:
+                    memo[-nums[i] - nums[j]] = [i, j]
+                else:
+                    ix, iy = memo[nums[j]]
+                    # TC:O(1)
+                    res.add((nums[ix], nums[iy], nums[j]))
+    return res
+
+
 nums = [1,0,-1]
 nums = [-1,0,1,2,-1,-4]
 nums = [-1,0,1,2,-1,-4,-2,-3,3,0,4]
