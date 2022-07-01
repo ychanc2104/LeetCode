@@ -52,3 +52,43 @@ def updateMatrix2(mat):
                 row.append(bfs((i, j)))
         res.append(row)
     return res
+
+
+# bfs, TC:O(N*M), SC:O(N*M),start from zero-cells and mark 1 as -1, relation=> mat[i][j] = neighbor_cell + 1
+def updateMatrix3(mat):
+    queue = collections.deque([])
+    for i in range(len(mat)):
+        for j in range(len(mat[0])):
+            if mat[i][j] == 0:
+                queue.append((i, j))
+            else:
+                # mark non-zero cells
+                mat[i][j] = -1
+    while queue:
+        r, c = queue.popleft()
+        # four directions
+        for x, y in ((1, 0), (0, 1), (-1, 0), (0, -1)):
+            nr, nc = r + y, c + x
+            if nr < 0 or nc < 0 or nr >= len(mat) or nc >= len(mat[0]) or mat[nr][nc] != -1:
+                continue
+            mat[nr][nc] = mat[r][c] + 1
+            queue.append((nr, nc))
+    return mat
+
+# 2D DP, TC:O(N*M), SC:O(1)
+def updateMatrix4(mat):
+    # top-left to bottom-right
+    for i in range(len(mat)):
+        for j in range(len(mat[0])):
+            if mat[i][j] > 0:
+                top = mat[i - 1][j] if i - 1 >= 0 else float("inf")
+                left = mat[i][j - 1] if j - 1 >= 0 else float("inf")
+                mat[i][j] = min(top, left) + 1
+    # bottom-right to top-left
+    for i in range(len(mat) - 1, -1, -1):
+        for j in range(len(mat[0]) - 1, -1, -1):
+            if mat[i][j] > 0:
+                bottom = mat[i + 1][j] if i + 1 < len(mat) else float("inf")
+                right = mat[i][j + 1] if j + 1 < len(mat[0]) else float("inf")
+                mat[i][j] = min(mat[i][j], bottom + 1, right + 1)
+    return mat
