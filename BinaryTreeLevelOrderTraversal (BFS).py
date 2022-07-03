@@ -4,6 +4,9 @@
 #         self.val = val
 #         self.left = left
 #         self.right = right
+
+import collections
+
 class Solution:
     def levelOrder(self, root):
         if not root:
@@ -47,5 +50,42 @@ class Solution:
             levels = [node for LR in leafs for node in LR if node]
         return ans
 
+    def levelOrder3(self, root):
+        level = 0
+        prelevel = -1
+        res = []
+        ans = []
+        node = root
+        queue = collections.deque([[node, level]])
+        while queue and node:
+            node, level = queue.popleft()
+            if ans and prelevel != level:
+                res.append(ans)
+                ans = []
+            if node:
+                ans.append(node.val)
+            if node.left:
+                queue.append([node.left, level+1])
+            if node.right:
+                queue.append([node.right, level+1])
+            prelevel = level
+        if ans:
+            res.append(ans)
+        return res
 
+    def levelOrder4(self, root):
+        level, prelevel = 0, -1
+        res, ans = [], []
+        queue = collections.deque([[root, level]])
+        while queue:
+            node, level = queue.popleft()
+            if ans and prelevel != level:
+                res.append(ans)
+                ans = []
+            if node:
+                ans.append(node.val)
+                queue.append([node.left, level+1])
+                queue.append([node.right, level+1])
+            prelevel = level
 
+        return res
