@@ -77,3 +77,26 @@ def cloneGraph3(node):
         return copy
 
     return dfs(node)
+
+# DFS, iterative, TC:O(V+E), SC:O(N) for visit, O(h) for stack, h is height of graph
+def cloneGraph4(node):
+    if not node: return None
+    memo = {}
+    visit = set()
+    stack = [node]
+    while stack:
+        temp = stack.pop()
+        # assign copy of temp (not include neighbors)
+        if temp not in memo:
+            memo[temp] = Node(temp.val, neighbors=[])
+        # control loop to terminate
+        if temp.val not in visit:
+            visit.add(temp.val)
+            stack.extend(temp.neighbors)
+            # assign its neighbors
+            for n in temp.neighbors:
+                if n not in memo:
+                    # can be visited next round
+                    memo[n] = Node(n.val, neighbors=[])
+                memo[temp].neighbors.append(memo[n])
+    return memo[node]
