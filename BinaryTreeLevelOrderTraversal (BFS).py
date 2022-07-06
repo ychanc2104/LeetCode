@@ -8,6 +8,37 @@
 import collections
 
 class Solution:
+
+    # bfs, TC:O(n), SC:O(n)
+    def levelOrder5(self, root):
+        res = []
+        levels = [root]
+        while levels and root:
+            res.append([l.val for l in levels if l])
+            # collecting leafs
+            leafs = []
+            for l in levels:
+                if l:
+                    leafs.append(l.left)
+                    leafs.append(l.right)
+            # assign levels, remove null from leafs
+            levels = [node for node in leafs if node]
+        return res
+
+    # dfs, TC:O(n), SC:O(n)
+    def levelOrder6(self, root):
+        res = []
+        def dfs(node, level):
+            if node:
+                if len(res) < level:
+                    res.append([])
+                res[level-1].append(node.val)
+                dfs(node.left, level+1)
+                dfs(node.right, level+1)
+        dfs(root, 1)
+        return res
+
+
     def levelOrder(self, root):
         if not root:
             return []
@@ -88,19 +119,4 @@ class Solution:
                 queue.append([node.right, level+1])
             prelevel = level
 
-        return res
-
-    def levelOrder5(self, root):
-        res = []
-        levels = [root]
-        while levels and root:
-            res.append([l.val for l in levels if l])
-            # collecting leafs
-            leafs = []
-            for l in levels:
-                if l:
-                    leafs.append(l.left)
-                    leafs.append(l.right)
-            # assign levels, remove null from leafs
-            levels = [node for node in leafs if node]
         return res
