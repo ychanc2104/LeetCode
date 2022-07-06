@@ -89,3 +89,18 @@ class Solution:
             prelevel = level
 
         return res
+
+    def levelOrder5(self, root):
+        res = []
+        levels = [root]
+        while levels and root:
+            res.append([l.val for l in levels if l])
+            # collecting leafs
+            leafs = []
+            for l in levels:
+                if l:
+                    leafs.append(l.left)
+                    leafs.append(l.right)
+            # assign levels, remove null from leafs
+            levels = [node for node in leafs if node]
+        return res
