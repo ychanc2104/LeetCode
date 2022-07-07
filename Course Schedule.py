@@ -61,6 +61,68 @@ def canFinish2(numCourses: int, prerequisites) -> bool:
             return False
     return True
 
+# topsort, Kahn's algorithm
+def canFinish3(n, edges):
+    """
+    :type n: int
+    :type edges: List[List[int]]
+    :rtype: bool
+    """
+    # construct graph
+    # value is prerequisites set
+    graph = {i: set() for i in range(n)}
+    # value is count of indegree number
+    in_degrees = {i: 0 for i in range(n)}
+
+    for edge in edges:
+        graph[edge[0]].add(edge[1])
+        in_degrees[edge[1]] += 1
+
+    # init var
+    q = collections.deque()
+    visited = set()
+
+    # find nodes whose in degree == 0
+    for index, in_degree in in_degrees.items():
+        if in_degree == 0:
+            q.append(index)
+
+    # loop all nodes whose in degree == 0
+    while q:
+        index = q.popleft()
+        visited.add(index)
+        for g in graph[index]:
+            in_degrees[g] -= 1
+            if in_degrees[g] == 0:
+                q.append(g)
+    return len(visited) == n
+
+
+
+# topsort, Kahn's algorithm, TC:O(V+E), SC:O(V+E)
+def canFinish4(numCourses: int, prerequisites):
+    # build graph and in_degree
+    graph = collections.defaultdict(set)
+    in_degree = collections.defaultdict(int)
+    for course, pre in prerequisites:
+        graph[course].add(pre)
+        in_degree[pre] += 1
+    # find in_degree=0 and add to queue
+    queue = collections.deque()
+    for i in range(numCourses):
+        if in_degree[i] == 0:
+            queue.append(i)
+    # start from q
+    visit = set()
+    while queue:
+        c = queue.popleft()
+        visit.add(c)
+        for pre in graph[c]:
+            in_degree[pre] -= 1
+            # no dependency
+            if in_degree[pre] == 0:
+                queue.append(pre)
+    return len(visit) == numCourses
 
 numCourses = 7
 prerequisites = [[1,0],[0,3],[0,2],[3,2],[2,5],[4,5],[5,6],[2,4]]
@@ -68,3 +130,8 @@ prerequisites = [[1,0],[0,3],[0,2],[3,2],[2,5],[4,5],[5,6],[2,4]]
 res = canFinish(numCourses, prerequisites)
 
 res2 = canFinish2(numCourses, prerequisites)
+
+
+n = 7
+edges = [[1,0],[0,3],[0,2],[3,2],[2,5],[4,5],[5,6],[2,4]]
+
