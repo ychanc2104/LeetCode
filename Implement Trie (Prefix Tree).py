@@ -6,13 +6,13 @@ class Trie:
     def __init__(self):
         self.children = defaultdict(Trie) # generate Trie class if key not exist
         self.isWord = False
-
+    # TC:O(m), m is len(word), SC:O(m)
     def insert(self, word: str) -> None:
         cur = self
         for c in word:
             cur = cur.children[c]
         cur.isWord = True
-
+    # TC:O(m), m is len(word), SC:O(1)
     def search(self, word: str) -> bool:
         cur = self
         for c in word:
@@ -21,6 +21,7 @@ class Trie:
             cur = cur.children[c]
         return cur.isWord
 
+    # TC:O(m), m is len(word), SC:O(1)
     def startsWith(self, prefix: str) -> bool:
         cur = self
         for c in prefix:
