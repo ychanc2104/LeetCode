@@ -47,3 +47,21 @@ class Solution:
                 if i == c: dp[i].append([c])
                 for comb in dp[i-c]: dp[i].append(comb + [c]) # O(M) worst: for each combination
         return dp[-1]
+
+    # dfs, TC: O(N^(T/M+1)), M is min(candidates), SC:(T/M) for recursive calls
+    def combinationSum4(self, candidates, target: int):
+        res = []
+        def dfs(target, path):
+            if target==0:
+                res.append(path)
+                return
+            elif target<0:
+                return
+            # O(N)
+            for num in candidates:
+                # prevent double counting
+                if not path or path[-1]>=num:
+                    # each iteration call dfs target/min(candidates) times
+                    dfs(target-num, path + [num])
+        dfs(target, [])
+        return res
