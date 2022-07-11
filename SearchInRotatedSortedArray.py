@@ -77,12 +77,14 @@ class Solution:
             if nums[mid] >= nums[left]:  # left rotated
                 # in ascending order side
                 if nums[left] <= target and target < nums[mid]:
+                    # if nums[L] == target, go left until L = R = 0
                     right = mid - 1
                 else:
                     left = mid + 1
             else:  # right rotated
                 # in ascending order side
                 if nums[mid] < target and target <= nums[right]:
+                    # if nums[R]==target, go right until L = R = len(nums)-1
                     left = mid + 1
                 else:
                     right = mid - 1
