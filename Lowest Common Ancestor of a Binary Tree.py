@@ -6,6 +6,8 @@
 class Solution:
     def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
         # return the node if find the target
+        # return node if encounter else return None
+        # return current node if left and right are not None
         if not root:
             return None
         if root.val==p.val or root.val==q.val:
