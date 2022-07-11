@@ -38,6 +38,18 @@ def merge3(intervals):
             res.append(interval)
     return res
 
+# TC:O(nlogn) for sorting, SC:O(n) for timsort
+def merge4(intervals):
+    intervals.sort()
+    res = [intervals[0]]
+    for i in range(1,len(intervals)):
+        if intervals[i][0] <= res[-1][1]:
+            # overlapping
+            res[-1][1] = max(res[-1][1], intervals[i][1])
+        else:
+            res.append(intervals[i])
+    return res
+
 intervals = [[2,3],[2,2],[3,3],[1,3],[5,7],[2,2],[4,6]]
 
 
