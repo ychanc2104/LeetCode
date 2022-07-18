@@ -164,5 +164,30 @@ def exist4(board, word: str) -> bool:
                 return True
     return False
 
+# dfs + backtracking, TC:O(N*M*3^L), SC:O(L), L = len(word)
+def exist5(board, word: str) -> bool:
+    n = len(board)
+    m = len(board[0])
+    def dfs(pos, row, col, visit):
+        if pos >= len(word):
+            return True
+        if col < 0 or row < 0 or row >= n or col >= m or (row, col) in visit:
+            return False
+        if board[row][col] != word[pos]:
+            return False
+        visit.add((row, col))
+        # print(visit, row,col, board[row][col], pos, word[pos])
+        if board[row][col] == word[pos]: # trivial if case
+            for x, y in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                if dfs(pos + 1, row + y, col + x, visit):
+                    return True
+        # backtracking
+        visit.remove((row, col))
+        return False
 
-
+    for i in range(n):
+        for j in range(m):
+            if board[i][j] == word[0]:
+                if dfs(0, i, j, set()):
+                    return True
+    return False
