@@ -37,3 +37,20 @@ def kthSmallest2(root, k: int) -> int:
             return root.val
         i += 1
         root = root.right
+
+# dfs, inorder traversal, TC:O()
+class Solution:
+    def kthSmallest(self, root, k: int) -> int:
+        # inorder: left => root => right
+        self.count = 0
+        res = []
+        def dfs(root):
+            if root:
+                dfs(root.left)
+                self.count += 1
+                if self.count==k:
+                    res.append(root.val)
+                dfs(root.right)
+        dfs(root)
+        #print(res, self.count)
+        return res[0]
