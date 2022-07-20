@@ -2,6 +2,7 @@
 # https://leetcode.com/problems/house-robber/discuss/156523/From-good-to-great.-How-to-approach-most-of-DP-problems.
 # https://leetcode.com/problems/house-robber/discuss/55696/Python-solution-3-lines.
 
+from functools import lru_cache
 
 ## first thought, brute force
 def rob(nums) -> int:
@@ -34,6 +35,14 @@ def rob2(nums) -> int:
         return max(nums[pos] + helper(pos + 2), helper(pos + 1))
     return helper(0)
 
+# with cache, dp like
+def rob2c(nums) -> int:
+    @lru_cache(maxsize=None)
+    def helper(i):
+        if i>=len(nums):
+            return 0
+        return max(helper(i+1), nums[i] + helper(i+2))
+    return helper(0)
 
 ## dp solution, top-down
 def rob3(nums):
@@ -84,6 +93,14 @@ def rob6(nums):
         # dp[1] = max(dp[2], dp[3]+3) = 3
         # dp[0] = max(dp[1], dp[2]+2) = 4
         dp[i] = max(dp.get(i + 1, 0), nums[i] + dp.get(i + 2, 0))
+    return dp[0]
+
+# dp, bottom-up
+def rob7(nums):
+    dp = [0] * (len(nums) + 2)
+    for i in range(len(nums) - 1, -1, -1):
+        dp[i] = max(nums[i] + dp[i + 2], dp[i + 1])
+    # print(dp)
     return dp[0]
 
 
