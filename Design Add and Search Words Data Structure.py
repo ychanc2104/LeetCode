@@ -128,3 +128,34 @@ class WordDictionary3:
             return current.end
 
         return dfs(0, self.root)
+
+
+class WordDictionary:
+
+    def __init__(self):
+        self.children = collections.defaultdict(WordDictionary)
+        self.isWord = False
+
+    def addWord(self, word: str) -> None:
+        node = self
+        for s in word:
+            node = node.children[s]
+        node.isWord = True
+
+    def search(self, word: str) -> bool:
+        node = self
+        def helper(i, node):
+            if i==len(word):
+                return node.isWord
+            #print(word[i], node.children.keys())
+            if word[i]=='.':
+                for k in node.children.values():
+                    if helper(i+1, k):
+                        return True
+                return False
+            elif word[i] in node.children:
+                if helper(i+1, node.children[word[i]]):
+                    return True
+            else:
+                return False
+        return helper(0, node)
