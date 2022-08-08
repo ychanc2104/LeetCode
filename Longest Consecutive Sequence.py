@@ -18,13 +18,14 @@ def longestConsecutive(nums) -> int:
 
 # TC: O(n)
 def longestConsecutive2(nums) -> int:
+     # [100,4,200,1,3,2]
     res = 0
     nums_set = set(nums)  # small to big
     for num in nums_set:
-
-        # num is sub-array of an answer, skip
+        # num is sub-array of an answer, skip, ex:skip 2,3,4
         if num - 1 in nums_set:
             continue
+        # main loop to get res, start from 1
         ans = 1
         while num + 1 in nums_set:
             ans += 1
