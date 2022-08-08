@@ -46,7 +46,7 @@ def pathSum2(root, targetSum: int):
     helper(root, targetSum, [])
     return res
 
-# iterative dfs + backtracking, the fastest, TC:O(N^2), SC:O(N^2)
+# iterative dfs + backtracking, the fastest, TC:O(N^2), SC:O(N)
 def pathSum3(root, targetSum: int):
     if not root:
         return []
