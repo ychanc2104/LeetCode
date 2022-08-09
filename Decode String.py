@@ -2,7 +2,7 @@
 # https://leetcode.com/problems/decode-string/discuss/87662/Python-solution-using-stack
 
 
-# use stack, TC:1+2+3+...+N => O(N^2), K is num in s, SC:O(maxK*)
+# use stack, TC:1+2+3+...+N => O(N^2), K is num in s, SC:O(L), L is size of output
 def decodeString(self, s: str) -> str:
     curStr = ""
     stack = []
