@@ -42,16 +42,16 @@ def combine2(n: int, k: int):
 
     return output
 
-# iterative, TC:O(k*C(n,k)), SC:O(C(n,k))
+# iterative, TC:O(k*C(n,k)), SC:O()), SC is bad
 def combine3(n, k):
     combs = [[]]
     for _ in range(k):
         combs = [[i] + c for c in combs for i in range(1, c[0] if c else n+1)]
     return combs
 
-# iterative, TC:O(k*C(n,k)), SC:O(C(n,k))
+# iterative, TC:O(k*C(n,k)), SC:O(C(n,k)), SC is bad
 def combine4(n, k):
-    combs = [[i] for i in range(n+1)]
+    combs = [[i] for i in range(1, n+1)]
     for _ in range(k-1):
         temp = []
         for c in combs:
