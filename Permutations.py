@@ -67,8 +67,40 @@ def permute3(nums):
     backtrack(0)
     return output
 
+# permute all combinations
+def permute4(nums):
+    res = []
+    for i in range(1, len(nums)+1):
+        coms = combine(nums, i)
+        for com in coms:
+            res.extend(permute3(com))
+    return res
+
+# combinations
+def combine(nums: list, k: int):
+    res = []
+    def backtrack(pos, path):
+        if len(path) == k:
+            # TC:O(k)
+            res.append(path[:])
+            # end
+            return
+        for i in range(pos, len(nums)):
+            # add i+1 to path
+            path.append(nums[i])
+            # to next number
+            backtrack(i + 1, path)
+            # backtrack
+            path.pop()
+    backtrack(0, [])
+    return res
 
 nums = [1,3,5,7,9,11,13,15]
+
+com = combine([1,2,3], 3)
+
+res4 = permute4([1,2,3])
+
 @timing
 def test(n=1000):
     for i in range(n):
