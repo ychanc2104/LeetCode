@@ -56,12 +56,22 @@ def search_leftmost2(nums, target) -> int:
 
 
 def search_leftmost3(nums, target) -> int:
+    """
+    1,2,2,2,2,2,3 (n=7), target=2
+    L R mid
+  1 0 6 3
+  2 0 2 1
+  3 0 0 0
+  4 1 0 x(end)
+  return 1(leftmost)
+    """
     L, R = 0, len(nums)-1
     while L <= R:
         mid = L + (R-L)//2
         if nums[mid] >= target:
             R = mid - 1
         else:
+            # L never reach the target until L>R => L is the answer
             L = mid + 1
     return L
 
