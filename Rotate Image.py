@@ -2,6 +2,7 @@
 ##　https://leetcode.com/problems/rotate-image/discuss/18884/Seven-Short-Solutions-(1-to-7-lines)
 
 class Solution:
+    # TC:O(MN), SC:O(1)
     def rotate(self, matrix):
         """
         Do not return anything, modify matrix in-place instead.
@@ -51,7 +52,7 @@ class Solution:
             for j in range(i):
                 matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
 
-
+    # TC: O(MN), SC:O(1)
     def rotate4(self, matrix):
         """
         The most pythonic solution is a simple one-liner using [::-1] to flip the matrix upside down and then zip to transpose it. It assigns the result back into A, so it's "in-place" in a sense and the OJ accepts it as such, though some people might not.
