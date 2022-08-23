@@ -54,6 +54,43 @@ def numDecodings3(s: str) -> int:
     return f2
 
 
+
+## dp, SC, O(n), TC: O(1)
+def numDecodings4(s: str) -> int:
+    # 11111 => 111(f0) + 11 and 1111(f1) + 1
+    # 11110 => 111(f0) + 10
+    # 11133 => 1113(f1) + 3
+    if s[0] == "0": return 0
+    f0, f1, f2 = 1, 1, 1
+    for i in range(1,len(s)):
+        if s[i] == "0":
+            if s[i-1:i+1]>"26" or s[i-1]=="0":
+                return 0
+            f2 = f0
+        elif s[i-1:i+1]<"10" or s[i-1:i+1]>"26":
+            f2 = f1
+        else:
+            f2 = f0 + f1
+        f0, f1 = f1, f2
+    return f2
+
+
+## dp, SC, O(n), TC: O(1)
+def numDecodings5(s: str) -> int:
+    # 11111 => 111(f0) + 11 and 1111(f1) + 1
+    # 11110 => 111(f0) + 10
+    # 11133 => 1113(f1) + 3
+    if s[0] == "0": return 0
+    f0, f1 = 1, 1
+    for i in range(1,len(s)):
+        f2 = 0
+        if s[i] != "0":
+            f2 = f1
+        if "10"<=s[i-1:i+1]<="26":
+            f2 += f0
+        f0, f1 = f1, f2
+    return f1
+
 s = "111111"
 
 res = numDecodings(s)
