@@ -1,5 +1,10 @@
 # https://leetcode.com/problems/meeting-rooms-ii/
 # https://leetcode.com/problems/meeting-rooms-ii/discuss/67860/My-Python-Solution-With-Explanation
+# https://leetcode.com/problems/meeting-rooms-ii/discuss/67917/Python-heap-solution-with-comments.
+# https://leetcode.com/problems/meeting-rooms-ii/discuss/272822/Python-Greedy-Interval-Partition-Problem
+
+
+import heapq
 
 # first thought, TC:O(nlogn+n^2), SC:O(n)
 def minMeetingRooms(intervals) -> int:
@@ -22,3 +27,56 @@ def minMeetingRooms(intervals) -> int:
                 res.append([start, end])
     # print(i, res)
     return len(res)
+
+# greedy, TC:O(nlogn), SC:O(n)
+def minMeetingRooms2(intervals) -> int:
+    # if overlapping => add one room
+    starts = sorted([s for s, e in intervals])
+    ends = sorted([e for s, e in intervals])
+
+    res = count = 0
+    i_s = i_e = 0
+    while i_s < len(starts):
+        if starts[i_s] < ends[i_e]:
+            # add one room
+            count += 1
+            i_s += 1
+            res = max(res, count)
+        else:
+            i_e += 1
+            count -= 1
+    return res
+
+# concise greedy, TC:O(nlogn), SC:O(n)
+def minMeetingRooms3(intervals) -> int:    # if overlapping => add one room
+    starts = sorted([s for s, e in intervals])
+    ends = sorted([e for s, e in intervals])
+    res = 0
+    i_e = 0
+    for s in starts:
+        if s < ends[i_e]:
+            # add one room
+            res += 1
+        else:
+            i_e += 1
+    return res
+
+
+# priority queues, TC:O(nlogn), SC:O(n)
+def minMeetingRooms4(intervals) -> int:    # if overlapping => add one room
+    # if overlapping => add one room
+    intervals.sort()
+    # create min heap to store end time
+    rooms = []
+    for s,e in intervals:
+        if rooms and s >= rooms[0]:
+            # means two intervals can use the same room
+            heapq.heapreplace(rooms, e)
+            # no need one room
+            # heapq.heappop(rooms)
+            # heapq.heappush(rooms, e)
+        else:
+            # a new room is allocated
+            heapq.heappush(rooms, e)
+
+    return len(rooms)
