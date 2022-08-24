@@ -31,6 +31,7 @@ def reorderList(head):
         head = head.next
     head.next = None
 
+# TC: O(N), SC:O(1)
 def reorderList2(head):
 
     """
