@@ -1,13 +1,13 @@
 # https://leetcode.com/problems/cheapest-flights-within-k-stops/
+# https://leetcode.com/problems/cheapest-flights-within-k-stops/discuss/317262/2-Clean-Python-Solution-(BFS-Dijkstra-Explained)
 
-
-import collections
+import collections, functools
 
 # first thought, dfs (time limit exceeded)
 def findCheapestPrice(n: int, flights , src: int, dst: int, k: int) -> int:
     visit = set()
     res = [float("inf")]
-
+    @functools.lru_cache(None)
     def dfs(city, sum_price, count=0):
         if city in visit or count > k + 1 or sum_price >= res[0]:
             return
@@ -27,6 +27,10 @@ def findCheapestPrice(n: int, flights , src: int, dst: int, k: int) -> int:
 
     dfs(src, 0, 0)
     return -1 if res[0] == float("inf") else res[0]
+
+
+
+
 
 
 n = 17
