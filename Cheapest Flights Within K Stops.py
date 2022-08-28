@@ -94,7 +94,7 @@ def findCheapestPrice4(n: int, flights , src: int, dst: int, k: int) -> int:    
 
 
 # Dijkstra, use priority queue(TLE), TC:O((|V|+|E|)*log(|V|)), SC:O(|V|)
-def findCheapestPrice5(n: int, flights , src: int, dst: int, k: int) -> int:    # BFS
+def findCheapestPrice5(n: int, flights , src: int, dst: int, k: int) -> int:
     graph = collections.defaultdict(list)
     for s, d, p in flights:
         graph[s].append((d, p))
@@ -109,6 +109,37 @@ def findCheapestPrice5(n: int, flights , src: int, dst: int, k: int) -> int:    
 
         for neighbor, price in graph[city]:
             heapq.heappush(heap, (price + cost, neighbor, count+1))
+    return -1
+
+# optimized Dijkstra, TC:O((|V|+|E|)*log(|V|)), SC:O(|V|)
+def findCheapestPrice5(n: int, flights , src: int, dst: int, k: int) -> int:
+    graph = collections.defaultdict(list)
+    for s, d, p in flights:
+        graph[s].append((d, p))
+    # Shortest distances array
+    distances = [float("inf") for _ in range(n)]
+    current_stops = [float("inf") for _ in range(n)]
+    distances[src] = 0
+    current_stops[src] = 0
+    # (cost, city, count)
+    heap = [(0, src, 0)]
+    while heap:
+        # min heap to pop out min
+        cost, city, count = heapq.heappop(heap)
+        if city == dst:
+            return cost
+        if count > k:
+            continue
+        # Examine and relax all neighboring edges if possible
+        for neighbor, price in graph[city]:
+            # better cost?
+            if price + cost < distances[neighbor]:
+                distances[neighbor] = price + cost
+                heapq.heappush(heap, (price + cost, neighbor, count+1))
+                current_stops[neighbor] = count
+            # better step?
+            elif count < current_stops[neighbor]:
+                heapq.heappush(heap, (price + cost, neighbor, count+1))
     return -1
 
 n = 17
