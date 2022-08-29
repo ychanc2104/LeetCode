@@ -40,6 +40,25 @@ def findMin2(nums) -> int:
     # or return nums[R]
     return nums[L]
 
+# binary search, TC:O(logn), SC:O(1)
+def findMin3(nums) -> int:
+    L = 0
+    R = len(nums) - 1
+    while L < R:
+        mid = L + (R - L)//2
+        # sorted list
+        if nums[R] > nums[L]:
+            return nums[L]
+        # not sorted array, nums[L > nums[R]]
+        if nums[mid] < nums[L]:
+            # move R
+            R = mid
+        elif nums[mid] >= nums[L]: # imply nums[mid] > nums[R]
+            # move L
+            L = mid + 1
+    return nums[L]
+
+
 nums = [3,4,5,1,2]
 
 res = findMin(nums)
