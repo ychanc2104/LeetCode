@@ -1,7 +1,7 @@
 # https://leetcode.com/problems/minimum-window-substring/
 # https://leetcode.com/problems/minimum-window-substring/discuss/226911/Python-two-pointer-sliding-window-with-explanation
 
-from collections import Counter
+import collections
 
 def check_valid(s, t):
     t_map = {c:0 for c in t}
@@ -87,28 +87,30 @@ def minWindow3(search_string, target):
             start += 1
     return min_window
 
-def minWindow3(search_string, target):
 
-    from collections import Counter
-
-    L, R = 0, 0
-    t_counter = Counter(t)
-    l = len(t)
-    res = ''
-    for c in s:
-        if t_counter[c] > 0:
-            l -= 1
-        t_counter[c] -= 1
-        R += 1
-
-        while l == 0:
-            res = s[L:R] if R - L < len(res) or not res else res
-            t_counter[s[L]] += 1
-            if t_counter[s[L]] > 0:
-                l += 1
+# sliding window, make useless characters to be negative, TC:O(N+M), SC:O(M)
+def minWindow4(s, t):
+    # TC:O(M)
+    counter_t = collections.Counter(t)
+    res = ""
+    L = 0
+    count = len(t)
+    # TC:O(N)
+    for R in range(len(s)):
+        # expand until window is valid
+        if counter_t[s[R]] > 0:
+            count -= 1
+        # make useless characters to be negative
+        counter_t[s[R]] -= 1
+        # contract(move L) until count != 0
+        while count == 0:
+            res = s[L:R + 1] if R - L + 1 < len(res) or res == "" else res
+            counter_t[s[L]] += 1
+            # if useless, counter alway < 0
+            if counter_t[s[L]] > 0:
+                count += 1
             L += 1
     return res
-
 
 
 s = "cabefgecdaecf"
