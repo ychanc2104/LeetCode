@@ -45,3 +45,22 @@ def trap2(height) -> int:
     return res
 
 
+# use stack, TC:O(N), SC:O(N)
+def trap3(height) -> int:
+    # stack to store each index
+    stack = []
+    res = 0
+    n = len(height)
+    for i in range(n):
+        # find the height is greater, bounded water
+        while stack and height[i] > height[stack[-1]]:
+            # bounded, calculate area of each bar
+            i_prev = stack.pop()
+            if not stack:
+                break
+            # calculate horizontal area (rectangle)
+            h = min(height[i], height[stack[-1]]) - height[i_prev]
+            width = i - stack[-1] - 1
+            res += h * width
+        stack.append(i)
+    return res
