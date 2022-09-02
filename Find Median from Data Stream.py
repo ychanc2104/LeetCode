@@ -65,7 +65,7 @@ class MedianFinder2:
         self.large = []
 
     def addNum(self, num: int) -> None:
-        # initailly add to small
+        # initially add to small
         heapq.heappush(self.small, -num)
         # pop small to large heap
         heapq.heappush(self.large, -heapq.heappop(self.small))
@@ -80,3 +80,27 @@ class MedianFinder2:
             return -self.small[0]
         else:
             return (-self.small[0] + self.large[0])/2
+
+
+class MedianFinder3:
+
+    def __init__(self):
+        # min heap
+        self.small = [] # negative, pop out the largest
+        self.large = [] # pop out the smallest
+
+    # TC:O(logN) for one operation, amortized TC:O(logN!/N)
+    def addNum(self, num: int) -> None:
+        heapq.heappush(self.large, num)
+        # push min in large to the small. small size is bigger
+        heapq.heappush(self.small, -heapq.heappop(self.large))
+        if len(self.small) > len(self.large):
+            # now large is bigger
+            heapq.heappush(self.large, -heapq.heappop(self.small))
+
+    # TC:O(1)
+    def findMedian(self) -> float:
+        # if size of small and large is equal => take average
+        if len(self.small) == len(self.large):
+            return (-self.small[0] + self.large[0])/2
+        return self.large[0]
