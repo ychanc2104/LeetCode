@@ -1,3 +1,8 @@
+# https://leetcode.com/problems/merge-k-sorted-lists/
+
+
+import heapq
+
 class ListNode:
     def __init__(self, val=0, next=None):
         self.val = val
@@ -35,43 +40,64 @@ lists = [list1, list2, list3]
 #     def __init__(self, val=0, next=None):
 #         self.val = val
 #         self.next = next
-class Solution:
-    ## compare one by one, t: O(kN) and sapce: O(n+k)
-    def mergeKLists(self, lists):
-        ans = ListNode()
-        dummy = ans
-        compare_list = [l.val for l in lists if l]
-        ## t, O(N), total N nodes
-        while min(compare_list)!=float("inf") and compare_list:
-            ## t, O(k), k lists here
-            m = min(compare_list)
-            i_m = compare_list.index(m)
-            if lists[i_m]:
-                lists[i_m] = lists[i_m].next
-            compare_list[i_m] = lists[i_m].val if lists[i_m] else float("inf")
-            dummy.next = ListNode(m)
-            dummy = dummy.next
-        return ans.next
-    ## compare one by one using heapq, t: O(N*log(k)) and sapce: O(n+k)
-    def mergeKLists2(self, lists):
-        ListNode.__lt__ = lambda self, other : self.val<other.val
-        import heapq
-        heap = []
-        for l in lists:
-            if l:
-                heapq.heappush(heap, l)
-        ans = ListNode()
-        dummy = ans
-        ## t, O(N), total N nodes
-        while heap:
-            ## t, O(logk), k lists here
-            node = heapq.heappop(heap)
-            dummy.next = node
-            dummy = dummy.next
-            node = node.next
-            if node:
-                heapq.heappush(heap, node)
-        return ans.next
+
+## compare one by one using heapq, t: O(N*log(k)) and sapce: O(n+k)
+def mergeKLists1(lists):
+    ListNode.__lt__ = lambda self, other : self.val<other.val
+    import heapq
+    heap = []
+    for l in lists:
+        if l:
+            heapq.heappush(heap, l)
+    ans = ListNode()
+    dummy = ans
+    ## t, O(N), total N nodes
+    while heap:
+        ## t, O(logk), k lists here
+        node = heapq.heappop(heap)
+        dummy.next = node
+        dummy = dummy.next
+        node = node.next
+        if node:
+            heapq.heappush(heap, node)
+    return ans.next
+
+
+# TC:O(mn), m is size of lists, n is max size of linked list, SC:O(k)
+def mergeKLists2(lists):
+    k = len(lists)
+    stored_lists = [head.val if head else float("inf") for head in lists]
+    res = dummy = ListNode(-1)
+    # O(m*k) in total
+    while stored_lists != [float("inf")] * k:
+        # O(k)
+        m = min(stored_lists)
+        # O(k)
+        i_m = stored_lists.index(m)
+        dummy.next = ListNode(m)
+        dummy = dummy.next
+        lists[i_m] = lists[i_m].next
+        stored_lists[i_m] = lists[i_m].val if lists[i_m] else float("inf")
+    return res.next
+
+
+# use priority queue, t: O(N*log(k)) and sapce: O(n+k)
+def mergeKLists3(lists):
+    stored_lists = [(head.val, i) if head else (float("inf"), i) for i, head in enumerate(lists)]
+    heapq.heapify(stored_lists)
+    res = dummy = ListNode(-1)
+    # O(n*logk) in total
+    while stored_lists and stored_lists[0][0] != float("inf"):
+        val, index = heapq.heappop(stored_lists)
+        # O(logk)
+        dummy.next = ListNode(val)
+        dummy = dummy.next
+        lists[index] = lists[index].next
+        if lists[index]:
+            heapq.heappush(stored_lists, (lists[index].val, index))
+        else:
+            heapq.heappush(stored_lists, (float("inf"), index))
+    return res.next
 
 
 
