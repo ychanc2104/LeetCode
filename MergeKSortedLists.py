@@ -81,7 +81,7 @@ def mergeKLists2(lists):
     return res.next
 
 
-# use priority queue, t: O(N*log(k)) and sapce: O(n+k)
+# use priority queue, TC: O(N*log(k)) and SC: O(k)
 def mergeKLists3(lists):
     stored_lists = [(head.val, i) if head else (float("inf"), i) for i, head in enumerate(lists)]
     heapq.heapify(stored_lists)
