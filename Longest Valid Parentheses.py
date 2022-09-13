@@ -47,7 +47,39 @@ def longestValidParentheses3(s: str) -> int:
     for i,e in enumerate(s):
         if stack[-1]!=-1 and s[stack[-1]]=='(' and e==')':
             stack.pop()
+            # after finish a pair, update res
             res = max(res, i - stack[-1])
         else:
             stack.append(i)
+    return res
+
+
+# trick, scan from left to right and right to left, TC:O(n), SC:O(1)
+def longestValidParentheses3(s: str) -> int:
+    res = 0
+    n = len(s)
+    # left to right scan
+    L, R = 0, 0
+    for i in range(n):
+        if s[i] == '(':
+            L += 1
+        else:
+            R += 1
+        if L == R:
+            res = max(res, L + R)
+        elif L <= R:
+            # initialize
+            L, R = 0, 0
+    # right to left scan
+    L, R = 0, 0
+    for i in range(n-1, -1, -1):
+        if s[i] == '(':
+            L += 1
+        else:
+            R += 1
+        if L == R:
+            res = max(res, L + R)
+        elif R <= L:
+            # initialize
+            L, R = 0, 0
     return res
