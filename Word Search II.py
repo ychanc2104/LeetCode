@@ -1,5 +1,5 @@
 # https://leetcode.com/problems/word-search-ii/
-import time
+import time, collections
 from functools import wraps
 
 def timing(func):
@@ -100,9 +100,136 @@ class Solution:
                 dfs(i, j, '', trie)
         return res
 
+
+class Trie:
+    def __init__(self):
+        self.children = collections.defaultdict(Trie)
+        self.isWord = False
+
+    def insert(self, word):
+        root = self
+        for s in word:
+            root = root.children[s]
+        root.isWord = True
+        root.word = word
+
+# TC:O(M(4*3^(L-1))), M is number of cells and L is max length of words(first time with 4 direction and latter only has 3 dir), SC:O(n)
+def findWords3(board, words):
+    n = len(board)
+    m = len(board[0])
+
+    def dfs(i, j, node):
+        if node.isWord:
+            res.append(node.word)
+            # prevent double adding
+            node.isWord = False
+
+        # boundary check
+        if i < 0 or i >= n or j < 0 or j >= m:
+            return
+        char = board[i][j]
+        if char not in node.children:
+            return
+        # mark visited
+        board[i][j] = '#'
+        # explore four directions
+        new_node = node.children[char]
+        dfs(i + 1, j, new_node)
+        dfs(i - 1, j, new_node)
+        dfs(i, j + 1, new_node)
+        dfs(i, j - 1, new_node)
+        # recover
+        board[i][j] = char
+
+        # (optimization) prune the nodes if reach end
+        if not new_node.children:
+            del node.children[char]
+    # build trie
+    trie = Trie()
+    for word in words:
+        trie.insert(word)
+    res = []
+    for i in range(len(board)):
+        for j in range(len(board[0])):
+            dfs(i, j, trie)
+    return res
+
+# TC:O(M(4*3^(L-1))), M is number of cells and L is max length of words(first time with 4 direction and latter only has 3 dir), SC:O(n)
+def findWords4(board, words):
+    WORD_KEY = '$'
+    trie = {}
+    for word in words:
+        node = trie
+        for letter in word:
+            # retrieve the next node; If not found, create a empty node.
+            node = node.setdefault(letter, {})
+        # mark the existence of a word in trie node
+        node[WORD_KEY] = word
+    rowNum = len(board)
+    colNum = len(board[0])
+    matchedWords = []
+
+    def backtracking(row, col, parent):
+        letter = board[row][col]
+        currNode = parent[letter]
+        # check if we find a match of word
+        word_match = currNode.pop(WORD_KEY, False)
+        if word_match:
+            # also we removed the matched word to avoid duplicates,
+            #   as well as avoiding using set() for results.
+            matchedWords.append(word_match)
+        # Before the EXPLORATION, mark the cell as visited
+        board[row][col] = '#'
+        # Explore the neighbors in 4 directions, i.e. up, right, down, left
+        for (rowOffset, colOffset) in [(-1, 0), (0, 1), (1, 0), (0, -1)]:
+            newRow, newCol = row + rowOffset, col + colOffset
+            if newRow < 0 or newRow >= rowNum or newCol < 0 or newCol >= colNum:
+                continue
+            if not board[newRow][newCol] in currNode:
+                continue
+            backtracking(newRow, newCol, currNode)
+        # End of EXPLORATION, we restore the cell
+        board[row][col] = letter
+        # Optimization: incrementally remove the matched leaf node in Trie.
+        if not currNode:
+            parent.pop(letter)
+
+    for row in range(rowNum):
+        for col in range(colNum):
+            # starting from each of the cells
+            if board[row][col] in trie:
+                backtracking(row, col, trie)
+
+    return matchedWords
+
+
+
+
 board = [["b","a","b","a","b","a","b","a","b","a"],["a","b","a","b","a","b","a","b","a","b"],["b","a","b","a","b","a","b","a","b","a"],["a","b","a","b","a","b","a","b","a","b"],["b","a","b","a","b","a","b","a","b","a"],["a","b","a","b","a","b","a","b","a","b"],["b","a","b","a","b","a","b","a","b","a"],["a","b","a","b","a","b","a","b","a","b"],["b","a","b","a","b","a","b","a","b","a"],["a","b","a","b","a","b","a","b","a","b"]]
 words = ["ababababaa","ababababab","ababababac","ababababad","ababababae","ababababaf","ababababag","ababababah","ababababai","ababababaj","ababababak","ababababal","ababababam","ababababan","ababababao","ababababap","ababababaq"]
 
+
+board = [["o","a","a","n"],["e","t","a","e"],["i","h","k","r"],["i","f","l","v"]]
+words = ["oath","pea","eat","rain","oathi","oathk","oathf","oate","oathii","oathfi","oathfii"]
+
+WORD_KEY = '$'
+
+trie = {}
+for word in words:
+    node = trie
+    for letter in word:
+        # retrieve the next node; If not found, create a empty node.
+        node = node.setdefault(letter, {})
+    # mark the existence of a word in trie node
+    node[WORD_KEY] = word
+
+
+res3 = findWords3(board, words)
+#
+trie = Trie()
+for word in words:
+    trie.insert(word)
+#
 res = findWords(board, words)
 
 res2 = Solution().findWords2(board, words)
