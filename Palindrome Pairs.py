@@ -21,7 +21,7 @@ def palindromePairs(words):
             res.append([i, hashmap['']])
             res.append([hashmap[''], i])
         # case 2,3 length is not equal, O(k^2)
-        for j in range(1, len(word)):  # O(k)
+        for j in range(1, len(word)):  # O(k), from index 1 to exclude word[i] itself
             # lls(i) + s => slls
             # sll[:1] => [hashmap[w], i]
             if word_reverse[:j] in hashmap and word_reverse[j:] == word_reverse[j:][::-1]:  # O(k)
