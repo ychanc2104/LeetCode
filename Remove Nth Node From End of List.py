@@ -8,11 +8,12 @@
 #         self.val = val
 #         self.next = next
 
-# two-pass, TC:O(N), SC:O(1)
+# two-pass(2L-n), TC:O(N), SC:O(1)
 def removeNthFromEnd(head, n: int):
     # touch the end => get nth, n+1 th node => remove nth node
     count = 0
     temp = head
+    # traverse L
     while temp:
         temp = temp.next
         count += 1
@@ -20,19 +21,22 @@ def removeNthFromEnd(head, n: int):
     if pos < 0:
         return head.next
     node = head
+    # traverse L-n
     for i in range(pos):
         node = node.next
     node.next = node.next.next
     return head
 
-# two-pass, two pointers TC:O(N), SC:O(1)
+# one-pass(L), two pointers TC:O(N), SC:O(1)
 def removeNthFromEnd2(head, n: int):
     # two pointers, separate n node between two pointers
     first = second = head
+    # traverse n
     for _ in range(n):
         first = first.next
     if not first:
         return second.next
+    # traverse L-n
     while head.next:
         second = second.next
         first = first.next
