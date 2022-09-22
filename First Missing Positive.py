@@ -33,7 +33,7 @@ def firstMissingPositive2(nums) -> int:
             nums[i] = 0
     # index i means does i+1 appear
     for num in nums:
-        index = (num) % (n+1) - 1
+        index = (num) % (n+1) - 1 # 0 to n-1
         if num > 0 and index >= 0: # ignore negative and zero, and index < 0
             # prevent affect the index not used
             nums[(num) % (n+1) - 1] += n+1 # add n+1 to prevent original position is 0
