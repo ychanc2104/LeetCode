@@ -34,3 +34,14 @@ def findDuplicate2(nums) -> int:
         fast = nums[fast]
     return slow
 
+# modified nums, TC:O(n), SC:O(1)
+def findDuplicate3(nums) -> int:
+    while nums[0] != nums[nums[0]]:
+        # swap
+        nums[nums[0]], nums[0] = nums[0], nums[nums[0]]
+        print(nums)
+    return nums[0]
+
+
+nums = [1,3,4,2,2]
+res3 = findDuplicate3(nums)
