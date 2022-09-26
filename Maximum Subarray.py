@@ -52,17 +52,7 @@ def maxSubArray5(nums):
     return max(nums)
 
 # Kadane's algorithm
-def maxSubArray6(nums):
-    """Find the largest sum of any contiguous subarray."""
-    best_sum = 0
-    current_sum = 0
-    for x in nums:
-        current_sum = max(0, current_sum + x)
-        best_sum = max(best_sum, current_sum)
-        print(x, current_sum, best_sum)
-    return best_sum
-
-def maxSubArray7(nums) -> int:
+def maxSubArray6(nums) -> int:
     res = M = nums[0]
     for num in nums[1:]:
         M = max(M + num, num)
