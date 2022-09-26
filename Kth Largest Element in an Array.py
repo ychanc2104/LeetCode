@@ -23,7 +23,7 @@ def findKthLargest(nums, k: int) -> int:
         return L
 
     L, R = 0, len(nums) - 1
-    while L < R:
+    while L < R: # or L < k
         # L~pivot-1 are greater than pivot
         pivot = partition(L, R)
         if pivot < k:  # don't use <=
