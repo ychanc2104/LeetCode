@@ -53,10 +53,10 @@ def maxSubArray5(nums):
 
 # Kadane's algorithm
 def maxSubArray6(nums) -> int:
-    res = M = nums[0]
+    res = tempMax = nums[0]
     for num in nums[1:]:
-        M = max(M + num, num)
-        res = max(res, M)
+        tempMax = max(tempMax + num, num)
+        res = max(res, tempMax)
     return res
 
 nums = [-2,1,-3,4,-1,2,1,-5,4]
