@@ -114,6 +114,24 @@ def insert6(intervals, newInterval):
         i += 1
     return res + [newInterval] + intervals[i:]
 
+
+## T:O(n), SC:O(1)
+def insert7(intervals, newInterval):
+    ## separate into three parts, left + merged newInterval + rest of intervals, put overlapping case to the 'else'
+    k = 0
+    i = 0
+    for s,e in intervals:
+        if e < newInterval[0]:
+            # left
+            k += 1
+        elif s > newInterval[1]:
+            break
+        else:
+            # overlapping
+            newInterval = [min(s, newInterval[0]), max(e, newInterval[1])]
+        i += 1
+    return intervals[:k] + [newInterval] + intervals[i:]
+
 intervals = [[1,2],[3,5],[6,7],[8,10],[12,16]]
 
 newInterval = [4,8]
