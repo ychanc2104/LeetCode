@@ -7,6 +7,12 @@ class Node:
         self.val = val
         self.neighbors = neighbors if neighbors is not None else []
 """
+
+class Node:
+    def __init__(self, val = 0, neighbors = None):
+        self.val = val
+        self.neighbors = neighbors if neighbors is not None else []
+
 import collections
 
 # first thought
@@ -100,3 +106,25 @@ def cloneGraph4(node):
                     memo[n] = Node(n.val, neighbors=[])
                 memo[temp].neighbors.append(memo[n])
     return memo[node]
+
+# BFS, TC:O(V+E), SC:O(W) = O(N), W is the width of the graph
+def cloneGraph5(node):
+    if not node: return None
+    clone = Node(node.val)
+    memo = {node: clone}
+    queue = collections.deque([node])
+    while queue:
+        node = queue.popleft()
+        for n in node.neighbors:
+            ## or
+            if n not in memo:
+                queue.append(n)
+            memo[node].neighbors.append(memo.setdefault(n, Node(n.val)))
+            ## or
+            # if n in memo:
+            #     memo[node].neighbors.append(memo[n])
+            # else:
+            #     memo[n] = Node(n.val)
+            #     memo[node].neighbors.append(memo[n])
+            #     queue.append(n)
+    return clone
