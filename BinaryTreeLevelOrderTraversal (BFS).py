@@ -131,3 +131,20 @@ def levelOrder6(root):
         # go to next level
         level += 1
     return levels
+
+# BFS, TC:O(n), SC:O(n)
+def levelOrder7(root):
+    if not root: return []
+    res = []
+    queue = collections.deque([(root, 0)])
+    while queue:
+        root, level = queue.popleft()
+        if len(res) == level:
+            res.append([root.val])
+        else:
+            res[level].append(root.val)
+        if root.left:
+            queue.append([root.left, level+1])
+        if root.right:
+            queue.append([root.right, level+1])
+    return res
