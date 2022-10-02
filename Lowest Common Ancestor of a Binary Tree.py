@@ -8,13 +8,11 @@ class Solution:
         # return the node if find the target
         # return node if encounter else return None
         # return current node if left and right are not None
-        if not root:
-            return None
-        if root.val==p.val or root.val==q.val:
+        if not root: return root
+        if root == p or root == q:
             return root
         left = self.lowestCommonAncestor(root.left, p, q)
         right = self.lowestCommonAncestor(root.right, p, q)
         if left and right:
             return root
-        else:
-            return left if left else right
+        return left if left else right
