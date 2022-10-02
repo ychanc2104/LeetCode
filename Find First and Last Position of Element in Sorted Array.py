@@ -26,6 +26,6 @@ def searchRange(nums, target: int):
                 L = mid + 1
             else:
                 R = mid - 1
-        return R if R < len(nums) and nums[R] == target else -1
+        return R if R>=0 and nums[R] == target else -1
 
     return [bsearch_l(nums, target), bsearch_r(nums, target)]
