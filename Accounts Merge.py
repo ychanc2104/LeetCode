@@ -130,44 +130,46 @@ class Solution:
 
         return [[accounts[i][0]] + sorted(emails) for i, emails in ans.items()]
 
+# union find, TC:O(NM*alpha) N is len of account and M is len of emails, SC:O(NM)
+def accountsMerge4(accounts):
+
+    def find(x):
+        px = parent[x]
+        if x != px:
+            parent[x] = find(px)
+        return parent[x]
+
+    def union(x, y):
+        px, py = find(x), find(y)
+        parent[px] = py
+    # TC:O(N), SC:O(N)
+    parent = [i for i in range(len(accounts))]
+    # SC:O(NM)
+    graph = collections.defaultdict(list)
+    # TC:O(N)
+    for i, account in enumerate(accounts):
+        email = account[1:]
+        for e in email:
+            graph[e].append(i)
+    # union accounts, TC:O(NM*alpha), M is average length of emails
+    for indices in graph.values():
+        # union indices
+        for i in range(len(indices) - 1):
+            union(indices[i], indices[i + 1])
+    # find all,
+    for i in range(len(accounts)):
+        find(i)
+    # print(parent)
+    # merge accounts
+    res = collections.defaultdict(set)
+    for i, px in enumerate(parent):
+        res[px].update(accounts[i][1:])
+    # print(res)
+    return [[accounts[k][0]] + list(sorted(v)) for k, v in res.items()]
+
+
 
 accounts = [["John","johnsmith@mail.com","john_newyork@mail.com"],["John","johnsmith@mail.com","john00@mail.com"],["Mary","mary@mail.com"],["John","johnnybravo@mail.com"]]
 accounts = [["David","David0@m.co","David1@m.co"],["David","David3@m.co","David4@m.co"],["David","David4@m.co","David5@m.co"],["David","David2@m.co","David3@m.co"],["David","David1@m.co","David2@m.co"]]
 
-n = len(accounts)
-parent = list(range(n))
 
-
-def find(x):
-    if parent[x] != x:
-        parent[x] = find(parent[x])
-    return parent[x]
-
-
-def union(x, y):
-    px, py = find(x), find(y)
-    parent[px] = py
-
-
-email_to_id = collections.defaultdict(list)
-for i, account in enumerate(accounts):
-    for email in account[1:]:
-        email_to_id[email].append(i)
-
-for ids in email_to_id.values():
-    for id in ids[1:]:
-        union(ids[0], id)
-
-merged_accounts = collections.defaultdict(set)
-for i, account in enumerate(accounts):
-    merged_accounts[find(i)].update(account[1:])
-
-merge = {}
-for i in range(n):
-    p = find(i)
-    print(accounts[i][1:])
-    if p not in merge:
-        merge[p] = set(accounts[i][1:])
-    else:
-        merge[p].update(accounts[i][1:])
-    print(p, merge[p])
