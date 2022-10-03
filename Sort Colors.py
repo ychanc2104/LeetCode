@@ -20,12 +20,12 @@ def sortColors(nums) -> None:
             counter[2] -= 1
 
 # one-pass, TC:O(n), SC:O(1)
-def sortColors(nums) -> None:
+def sortColors2(nums) -> None:
     """
     Do not return anything, modify nums in-place instead.
     """
     L, R = 0, len(nums) - 1
-    i = 0
+    i = 0 # checked index
     #
     while i <= R:
         if nums[i] == 2:
@@ -37,3 +37,19 @@ def sortColors(nums) -> None:
             i = L
         elif nums[i] == 1:
             i += 1
+
+# counting sort, TC:O(N), SC:O(3)
+def sortColors3(nums) -> None:
+    """
+    Do not return anything, modify nums in-place instead.
+    """
+    # 0, 1, 2 only
+    counting = [0] * 3
+    for num in nums:
+        counting[num] += 1
+    i = 0
+    for v in range(3):
+        for _ in range(counting[v]):
+            nums[i] = v
+            i += 1
+
