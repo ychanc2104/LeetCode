@@ -38,3 +38,29 @@ def myAtoi(s: str) -> int:
     res = '0' if not res else res
     res = min(int(res), 2 ** 31 - 1) if sign == 1 else max(-int(res), -2 ** 31)
     return res
+
+def myAtoi2(s: str) -> int:
+    # once encounter +-, must be going to get number, otherwise return res
+    state = 0 # 0:to accept +- or exclude, 1:to get number
+    tempSum = 0
+    sign = 1
+    for l in s:
+        if l in '0123456789':
+            state = 1
+            if sign == 1 and tempSum > (2**31-1-int(l))//10:
+                return 2**31-1
+            elif sign == -1 and tempSum > (2**31-int(l))//10:
+                return -2**31
+            tempSum = tempSum * 10 + int(l)
+        elif l in '+-':
+            if state == 0:
+                state = 1
+                sign = 1 if l=='+' else -1
+            else:
+                return sign * tempSum
+        elif l == ' ' and state==0: # initial state
+            continue
+        else:
+            # break
+            return sign * tempSum
+    return sign * tempSum
