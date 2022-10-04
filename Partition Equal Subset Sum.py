@@ -66,3 +66,52 @@ def canPartition3(nums) -> bool:
                 dp[i] = True
                 # print(dp)
     return dp[-1]
+
+# top down dp
+def canPartition4(nums) -> bool:
+    s = sum(nums)
+    if s & 1:
+        return False
+    target = s // 2
+    dp = {}
+    def helper(i, target):
+        if target == 0:
+            return True
+        if target < 0 or i >= len(nums):
+            return False
+        if (i, target) in dp:
+            return dp[(i, target)]
+        dp[(i, target)] = helper(i + 1, target - nums[i]) or helper(i + 1, target)  # choose or not choose
+        return dp[(i, target)]
+
+    return helper(0, target)
+
+
+# bottom up dp, TC:O(NM), SC:O(M)
+def canPartition5(nums) -> bool:
+    s = sum(nums)
+    if s & 1:
+        return False
+    target = s//2
+    # bottom-up
+    dp = [False] * (target + 1)
+    for i in range(len(nums)):
+        for t in range(target, -nums[i], -1):
+            nt = t-nums[i]
+            if nt < 0:
+                continue
+            if nt == 0 or dp[nt]:
+                dp[t] = True
+    #print(dp)
+    return dp[-1]
+
+# bit, TC:O(N), SC:O(1)
+def canPartition5(nums) -> bool:
+    # := assign and use total
+    if (total := sum(nums)) & 1:
+        return False
+
+    dp = 1 << (total >> 1)
+    for n in nums:
+        dp |= dp >> n
+    return dp & 1
