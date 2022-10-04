@@ -51,3 +51,20 @@ def wordBreak3(s: str, wordDict) -> bool:
                 dp[i] = True
                 break
     return dp[len(s)]
+
+
+#dp, TC:O(NMK + N^2), SC:O(N)
+def wordBreak(s: str, wordDict) -> bool:
+    n = len(s)
+    dp = [False] * (n+1)
+    dp[0] = True
+    # TC:O(NMK), N is length of s
+    for i in range(1,n+1):
+        s_sub = s[:i] # N
+        # TC:O(MK) M is len(wordDict), K is word length
+        for word in wordDict:
+            m = len(word)
+            if s_sub == word or (dp[i - m] and s_sub[i - m:] == word):  # prefix + suffix
+                dp[i] = True
+                break
+    return dp[-1]
