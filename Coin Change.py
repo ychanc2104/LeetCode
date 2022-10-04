@@ -1,5 +1,7 @@
 # https://leetcode.com/problems/coin-change/
 
+import functools
+
 ## TC: O(amount*len(coins))
 def coinChange(coins, amount):
     dp = [amount + 1] * (amount + 1)
@@ -63,6 +65,35 @@ def coinChange4(coins, amount):
                 queue.append([node + coin, step + 1])
                 visited.add(node + coin)
     return -1
+
+
+# top-down
+def coinChange5(coins, amount: int) -> int:
+
+    dp = {0:0}
+    def helper(amount):
+        if amount < 0:
+            return float("inf")
+        if amount in dp:
+            return dp[amount]
+        dp[amount] = min([helper(amount - c) + 1 for c in coins])
+        return dp[amount]
+    helper(amount)
+    return dp[amount] if dp[amount]!=float('inf') else -1
+
+
+# top-down
+def coinChange6(coins, amount: int) -> int:
+    @functools.lru_cache(None)
+    def helper(amount):
+        if amount == 0:
+            return 0
+        if amount < 0:
+            return float("inf")
+        return min([helper(amount-c)+1 for c in coins])
+    res = helper(amount)
+    return res if res != float('inf') else -1
+
 
 coins = [1,2,5]
 amount = 11
