@@ -10,7 +10,7 @@
 #         self.right = right
 
 
-# level order traversal, TC:O(N), SC:O(2^h)
+# level order traversal, TC:O(N), SC:O(D) D is diameter of tree
 def rightSideView(root):
     # rightmost node, level order and pick rightmost
     res = []
@@ -24,4 +24,22 @@ def rightSideView(root):
             if l.right:
                 leafs.append(l.right)
         levels = leafs
+    return res
+
+
+# dfs, TC:O(N), SC:O(H) H is height of tree
+def rightSideView2(root):
+    if not root:
+        return []
+    res = []
+    def helper(root, level=0):
+
+        if len(res) <= level:
+            res.append(root.val)
+        if root and root.right:
+            helper(root.right, level+1)
+        if root and root.left:
+            helper(root.left, level+1)
+
+    helper(root, 0)
     return res
