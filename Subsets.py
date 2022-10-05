@@ -37,23 +37,19 @@ def subsets3(nums):
     dfs(nums, [])
     return res
 
-# backtracking
+
+# backtracking, TC:O(N*2^N), SC:O(N)
 def subsets4(nums):
     res = []
-
-    def backtracking(l, i, path):
-        # l: desired length
-        if l == len(path):
-            res.append(path)
+    path = []
+    def backtrack(pos):
+        if pos == len(nums):
+            res.append(path[:]) # TC:O(N)
             return
-        if i >= len(nums):
-            return
-        # pick
-        backtracking(l, i + 1, path + [nums[i]])
-        # not pick
-        backtracking(l, i + 1, path)
+        path.append(nums[pos])
+        backtrack(pos + 1)  # choose
+        path.pop()
+        backtrack(pos + 1)  # not choose
 
-    for i in range(len(nums) + 1):
-        # iterate all desired length, 0 to len(nums)
-        backtracking(i, 0, [])
+    backtrack(0)
     return res
