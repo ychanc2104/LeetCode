@@ -112,6 +112,30 @@ def longestPalindrome6(s: str) -> str:
     return s[(maxI - maxRadius) // 2: (maxI + maxRadius) // 2]
 
 
+
+# Manacher algorithm, TC:O(n), SC:(n)
+def longestPalindrome7(s: str) -> str:
+    sn = f"$#{'#'.join(s)}#^" # prevent boundary check
+    dp = [0] * len(sn)
+    C, R = 0, 0 # current center and radius
+    mC, mR = 0, 0
+    for i in range(1, len(sn)-1):
+        # mirror x---C---i--|
+        if i + dp[C-(i-C)] <= C + R:
+            # safe
+            dp[i] = min(dp[C-(i-C)], C + R - i)
+        # center expansion
+        while sn[i - dp[i] - 1] == sn[i + dp[i] + 1]:
+            dp[i] += 1
+        if i + dp[i] > C + R: # right bound
+            C = i
+            R = dp[i]
+            if R > mR:
+                mC, mR = C, R
+    #print(sn,dp)
+    return s[(mC - mR)//2 : (mC + mR)//2] # left bound to right bound
+
+
 s = "aababa"
 
 
