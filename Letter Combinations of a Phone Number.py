@@ -47,6 +47,16 @@ def letterCombinations2(digits: str):
     backtrack(0, [])
     return res
 
+# TC:O(n*4^n), SC:O(4^n)
+def letterCombinations3(digits: str):
+    if not digits:
+        return []
+    search_map = {'2':'abc','3':'def','4':'ghi','5':'jkl','6':'mno','7':'pqrs','8':'tuv','9':'wxyz'}
+    res = ['']
+    for d in digits:
+        res = [temp+s for temp in res for s in search_map[d]]
+    return res
+
 digits = "23"
 
 res = letterCombinations(digits)
