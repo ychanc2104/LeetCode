@@ -3,37 +3,9 @@
 
 import collections
 
-# T, O(m*n*4^k)
-def exist(board, word: str) -> bool:
-    m = len(board)
-    n = len(board[0])
-    k = len(word)
-    visit = set()
-
-    def dfs(index, target):
-        # print(index, visit, path, target, path==word, self.found)
-        r, c = index
-        # print(index, target, visit)
-        if target == k:
-            return True
-        if r > m - 1 or c > n - 1 or r < 0 or c < 0 or target > k - 1 or index in visit or board[r][c] != word[target]:
-            return False
-
-        visit.add((r, c))
-        res = dfs((r, c + 1), target + 1) or dfs((r + 1, c), target + 1) or dfs((r - 1, c), target + 1) or dfs((r, c - 1),
-                                                                                                               target + 1)
-        visit.remove((r, c))
-        return res
-
-    for i in range(m):
-        for j in range(n):
-            if dfs((i, j), 0):
-                return True
-    return False
-
 
 # faster, remove some cases word count>board
-def exist2(board, word: str) -> bool:
+def exist1(board, word: str) -> bool:
     m = len(board)
     n = len(board[0])
     k = len(word)
@@ -71,7 +43,7 @@ def exist2(board, word: str) -> bool:
 
 
 # fastest
-def exist3(board, word: str) -> bool:
+def exist2(board, word: str) -> bool:
     m = len(board)
     n = len(board[0])
     k = len(word)
@@ -115,7 +87,7 @@ def exist3(board, word: str) -> bool:
 
 
 # the fastest, remove some cases word count>board
-def exist4(board, word: str) -> bool:
+def exist3(board, word: str) -> bool:
     ROW = len(board)
     CELL = len(board[0])
     path = set()
@@ -164,30 +136,36 @@ def exist4(board, word: str) -> bool:
                 return True
     return False
 
-# dfs + backtracking, TC:O(N*M*3^L), SC:O(L), L = len(word)
-def exist5(board, word: str) -> bool:
-    n = len(board)
-    m = len(board[0])
-    def dfs(pos, row, col, visit):
+
+
+
+# dfs + backtracking, TC:O(N*M*3^L), SC:O(L), L = len(word) for recursive call
+def exist4(board, word: str) -> bool:
+    n, m = len(board), len(board[0])
+
+    def dfs(pos, i, j):
         if pos >= len(word):
             return True
-        if col < 0 or row < 0 or row >= n or col >= m or (row, col) in visit:
+        if i < 0 or j < 0 or i >= n or j >= m or board[i][j] != word[pos]:
             return False
-        if board[row][col] != word[pos]:
-            return False
-        visit.add((row, col))
-        # print(visit, row,col, board[row][col], pos, word[pos])
-        if board[row][col] == word[pos]: # trivial if case
-            for x, y in ((1, 0), (-1, 0), (0, 1), (0, -1)):
-                if dfs(pos + 1, row + y, col + x, visit):
-                    return True
-        # backtracking
-        visit.remove((row, col))
-        return False
 
+        letter = board[i][j]
+        board[i][j] = '#'  # mark visited
+        for ro, co in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            res = dfs(pos + 1, i + ro, j + co)
+            if res:  # once true, no need to explore more
+                break
+        board[i][j] = letter  # backtrack
+        return res
+
+    # remove case, freq of board < freq of word
+    counter_1 = collections.Counter([s for row in board for s in row])
+    counter_2 = collections.Counter(word)
+    if not all([counter_1[k] >= counter_2[k] for k in counter_2]):
+        return False
+    # TC:O(NM3^K)
     for i in range(n):
         for j in range(m):
-            if board[i][j] == word[0]:
-                if dfs(0, i, j, set()):
-                    return True
+            if dfs(0, i, j):
+                return True
     return False
