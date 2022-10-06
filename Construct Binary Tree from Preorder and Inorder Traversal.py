@@ -3,11 +3,11 @@
 
 
 # Definition for a binary tree node.
-# class TreeNode:
-#     def __init__(self, val=0, left=None, right=None):
-#         self.val = val
-#         self.left = left
-#         self.right = right
+class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
 
 # time: O(n^2)
 def buildTree(preorder, inorder):
@@ -60,3 +60,18 @@ def buildTree3(preorder, inorder):
     inorder.reverse()
     return build(None)
 
+
+# speed up search using dict, TC:O(N), SC:O(N)
+def buildTree4(preorder, inorder):
+    search = {v:i for i,v in enumerate(inorder)}
+    def helper(p, L, R):
+        if L > R:
+            return None
+        val = preorder[p]
+        root = TreeNode(val)
+        # i-L ia size of left
+        i = search[val] # (0~i-1) (i)root (i+1~n)
+        root.left = helper(p+1, L, i-1)
+        root.right = helper(p+1+(i-L), i+1, R)
+        return root
+    return helper(0, 0, len(preorder)-1)
