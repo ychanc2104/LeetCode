@@ -52,6 +52,25 @@ def findAnagrams2(s: str, p: str):
             res.append(i - len(p) + 1)
     return res
 
+
+# sliding window, TC:O(n), SC:O(26) ~ O(1)
+def findAnagrams3(s: str, p: str):
+    if len(s) < len(p): return []
+
+    n = len(p)
+    counter = collections.Counter(p)
+    valid = collections.Counter()
+    res = []
+    for i in range(len(s)):
+        valid[s[i]] += 1
+        if i >= n:
+            valid[s[i - n]] -= 1
+        # print(valid)
+        if valid == counter:
+            # if all([valid[k]==v for k,v in counter.items()]):
+            res.append(i - n + 1)
+    return res
+
 s = "cbaebabacd"
 p = "ab"
 
