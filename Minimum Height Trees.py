@@ -34,7 +34,7 @@ def findMinHeightTrees(n: int, edges):
     return res
 
 # topsort, TC:O(V+E), SC:O(V+E)
-def findMinHeightTrees(n: int, edges):
+def findMinHeightTrees2(n: int, edges):
     if n == 1:
         return [0]
     dict_map = collections.defaultdict(set)
@@ -64,5 +64,26 @@ def findMinHeightTrees(n: int, edges):
     return leaves
 
 
-7
-[[0,1],[1,2],[1,3],[2,4],[3,5],[4,6]]
+# topsort, TC:O(V+E), SC:O(V+E)
+def findMinHeightTrees3(n: int, edges):
+    if n <= 2: return [i for i in range(n)]
+    graph = collections.defaultdict(set)
+    for a,b in edges:
+        # undirected
+        graph[a].add(b)
+        graph[b].add(a)
+    # top sort
+    drop = [node for node,neighbors in graph.items() if len(neighbors) == 1]
+    count = n
+    while count > 2:
+        new_drop = []
+        for node in drop:
+            # drop neighbor of node, must be only one neighbor
+            nei = graph[node].pop()
+            graph[nei].remove(node) # remove node
+            if len(graph[nei]) == 1:
+                new_drop.append(nei) # attempt to drop
+        count -= len(drop) # remaining node
+        drop = new_drop
+    return drop
+
