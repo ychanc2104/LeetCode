@@ -94,14 +94,10 @@ def canPartition5(nums) -> bool:
         return False
     target = s//2
     # bottom-up
-    dp = [False] * (target + 1)
-    for i in range(len(nums)):
-        for t in range(target, -nums[i], -1):
-            nt = t-nums[i]
-            if nt < 0:
-                continue
-            if nt == 0 or dp[nt]:
-                dp[t] = True
+    dp = [True] + [False] * target
+    for num in nums:
+        for t in range(target, num-1, -1):
+            dp[t] = dp[t] or dp[t-num]
     #print(dp)
     return dp[-1]
 
