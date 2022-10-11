@@ -36,6 +36,21 @@ def canCompleteCircuit2(gas, cost) -> int:
             res = i + 1
     return res
 
+# TC:O(N), SC:O(1)
+def canCompleteCircuit3(gas, cost) -> int:
+    tot_tank = 0
+    cur_tank = 0 # find last negative, next index is res
+    res = 0 # only one solution
+    i = 0
+    for g,c in zip(gas,cost):
+        tot_tank += g - c
+        cur_tank += g - c
+        if cur_tank < 0:
+            res = i + 1 # set next as start
+            cur_tank = 0 # initialize tank
+        i += 1
+    return res if tot_tank >= 0 else -1
+
 
 gas = [1,2,3,4,3]
 cost = [3,4,5,1,2]
