@@ -31,22 +31,13 @@ def dailyTemperatures2(temperatures):
 
 # monotonic stack, TC:O(N), SC:O(1)
 def dailyTemperatures3(temperatures):
-    n = len(temperatures)
-    hottest = 0
-    answer = [0] * n
-    # bottom-up
-    for curr_day in range(n - 1, -1, -1):
-        current_temp = temperatures[curr_day]
-        if current_temp >= hottest:
-            hottest = current_temp
-            # no possibility to get warmer, use 0(default)
-            continue
-
-        days = 1
-        while temperatures[curr_day + days] <= current_temp:
-            # Use information from answer to search for the next warmer day
-            # directly jump to the pos is greater than temperatures[curr_day + days]
-            days += answer[curr_day + days]
-        answer[curr_day] = days
-
-    return answer
+    stack = []  # put index
+    res = [0] * len(temperatures)
+    for i, temp in enumerate(temperatures):
+        # stack descend until temp > temperatures[stack[-1]]
+        while stack and temp > temperatures[stack[-1]]:
+            index = stack.pop()
+            res[index] = i - index
+        else:
+            stack.append(i)
+    return res
