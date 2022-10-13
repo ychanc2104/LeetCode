@@ -1,6 +1,7 @@
 # https://leetcode.com/problems/valid-sudoku/
 # https://leetcode.com/problems/valid-sudoku/discuss/15451/A-readable-Python-solution
 
+import collections
 # first though, TC:O(n^2), SC:O(N)
 def isValidSudoku(board) -> bool:
     row = len(board)
@@ -72,3 +73,27 @@ def isValidSudoku2(board):
         return len(res) == len(set(res))
 
     return is_valid_row(board) and is_valid_column(board) and is_valid_square(board)
+
+# TC:O(n^2), SC:O(N)
+def isValidSudoku3(board) -> bool:
+    row_check = collections.defaultdict(set)
+    col_check = collections.defaultdict(set)
+    box_check = collections.defaultdict(set)
+    for i in range(9):
+        for j in range(9):
+            cell = board[i][j]
+            if cell == '.':
+                continue
+            # row
+            if cell in row_check[i]:
+                return False
+            row_check[i].add(cell)
+            # col
+            if cell in col_check[j]:
+                return False
+            col_check[j].add(cell)
+            # box
+            if cell in box_check[3 * (i // 3) + j // 3]:
+                return False
+            box_check[3 * (i // 3) + j // 3].add(cell)
+    return True
