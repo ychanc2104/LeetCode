@@ -35,3 +35,16 @@ def maxProduct3(nums) -> int:
         maxRes, minRes = max(num, max(num * maxRes, num * minRes)), min(num, min(num * minRes, num * maxRes))
         res = max(res, maxRes)
     return res
+
+
+# TC: O(n)
+def maxProduct4(nums) -> int:
+    res = nums[0]
+    tempMax = nums[0] # store max
+    tempMin = nums[0] # store min
+    for i in range(1, len(nums)):
+        temp = tempMax
+        tempMax = max(nums[i], temp * nums[i], tempMin * nums[i])
+        tempMin = min(nums[i], temp * nums[i], tempMin * nums[i])
+        res = max(res, tempMax)
+    return res
