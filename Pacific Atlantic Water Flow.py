@@ -61,6 +61,43 @@ def pacificAtlantic2(heights):
     # print(res_pac, res_atl)
     return set.intersection(res_pac, res_atl)
 
+# dfs
+def pacificAtlantic3(heights: List[List[int]]) -> List[List[int]]:
+    n, m = len(heights), len(heights[0])
+    # use intersetion of two oceans
+    # spread from edges
+    stack_pac = []
+    stack_atl = []
+    for i in range(n):
+        for j in range(m):
+            if i == 0 or j == 0:
+                stack_pac.append((i, j))
+            if i == n - 1 or j == m - 1:
+                stack_atl.append((i, j))
+    set_pac = set(stack_pac)  # dfs
+    while stack_pac:
+        r, c = stack_pac.pop()
+        height_cur = heights[r][c]
+        # explore four directions
+        for ro, co in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            rn, cn = r + ro, c + co
+            if rn < 0 or cn < 0 or rn >= n or cn >= m or (rn, cn) in set_pac or height_cur > heights[rn][cn]:
+                continue
+            stack_pac.append((rn, cn))
+            set_pac.add((rn, cn))
+
+    set_atl = set(stack_atl)
+    while stack_atl:
+        r, c = stack_atl.pop()
+        height_cur = heights[r][c]
+        # explore four directions
+        for ro, co in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            rn, cn = r + ro, c + co
+            if rn < 0 or cn < 0 or rn >= n or cn >= m or (rn, cn) in set_atl or height_cur > heights[rn][cn]:
+                continue
+            stack_atl.append((rn, cn))
+            set_atl.add((rn, cn))
+    return set_pac.intersection(set_atl)
 
 heights = [[1,2,2,3,5],[3,2,3,4,4],[2,4,5,3,1],[6,7,1,4,5],[5,1,1,2,4]]
 # find coordinates which flows to 4 edges
