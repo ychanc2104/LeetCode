@@ -159,3 +159,42 @@ class WordDictionary:
             else:
                 return False
         return helper(0, node)
+
+# add max_word_length to prevent TLE
+class WordDictionary:
+
+    def __init__(self):
+        self.children = collections.defaultdict(WordDictionary)
+        self.isWord = False
+
+        self.max_word_length = 0
+
+    def addWord(self, word: str) -> None:
+        self.max_word_length = max(self.max_word_length, len(word))
+        node = self  # Trie node
+        for s in word:
+            node = node.children[s]
+        node.isWord = True
+
+    def search(self, word: str) -> bool:
+        if len(word) > self.max_word_length:
+            return False
+
+        def dfs(node, pos):
+            if pos == len(word):
+                return node.isWord
+            s = word[pos]
+            if s == '.':
+                # go next, traverse all nodes
+                for node_next in node.children.values():
+                    if dfs(node_next, pos + 1):
+                        return True
+                return False
+            elif s in node.children:
+                # go depth
+                if dfs(node.children[s], pos + 1):
+                    return True
+            else:  # not in
+                return False
+
+        return dfs(self, 0)
