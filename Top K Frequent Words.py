@@ -54,6 +54,23 @@ class Pair:
         else:
             return self.count < other.count
 
+
+# min heap, TC:O(klogn), TC:O(n)
+def topKFrequent3(words, k: int):
+    # counter, TC:O(N), SC:O(N)
+    counter = {}
+    for word in words:
+        counter[word] = counter.get(word, 0) + 1
+    # min heap, TC:O(N), SC:O(N)
+    heap = []
+    for word, count in counter.items():
+        heap.append((-count, word))
+    # TC:O(N)
+    heapq.heapify(heap)
+    # get top k frequent word, TC:O(klogN)
+    return [heapq.heappop(heap)[1] for _ in range(k)]
+
+
 a = Pair(2, 'abc')
 b = Pair(1, 'aac')
 c = Pair(2, 'aac')
