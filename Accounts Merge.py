@@ -167,6 +167,41 @@ def accountsMerge4(accounts):
     # print(res)
     return [[accounts[k][0]] + list(sorted(v)) for k, v in res.items()]
 
+# dfs
+def accountsMerge5(accounts):
+    n = len(accounts)
+    graph = collections.defaultdict(set)
+
+    for i in range(n):
+        emails = accounts[i][1:]
+        for j in range(len(emails)):
+            graph[emails[0]].add(emails[j])
+            graph[emails[j]].add(emails[0])
+
+    visited = set()
+    comp = collections.defaultdict(list)
+
+    def dfs(i, node):
+        if node in visited:
+            return
+        comp[i].append(node)
+        visited.add(node)
+        for nei in graph[node]:
+            if nei in visited:
+                continue
+            dfs(i, nei)
+    # TC:O(NK)
+    for i in range(n):
+        for email in accounts[i][1:]:
+            dfs(i, email)
+
+    # sorting worst case all emails belong to one person, TC:O(NKlogNK)
+    res = []
+    for i, emails in comp.items():
+        res.append([accounts[i][0]] + sorted(emails))
+    return res
+
+
 
 
 accounts = [["John","johnsmith@mail.com","john_newyork@mail.com"],["John","johnsmith@mail.com","john00@mail.com"],["Mary","mary@mail.com"],["John","johnnybravo@mail.com"]]
