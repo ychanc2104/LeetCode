@@ -77,25 +77,40 @@ def validTree3(n: int, edges) -> bool:  # cycle check
         find(i)
     return len(set(parents)) == 1
 
+# dfs, TC:O(n+E), SC:O(n+E)
+def validTree4(n: int, edges) -> bool:    # cycle check
+    # no loops and repeated edges
+    # no repeat edges
+    if len(edges) != n - 1:
+        return False
+    # no loops, visit all node from arbtary node
+    # build graph(adjacency list)
+    graph = collections.defaultdict(set)
+    for a, b in edges:
+        graph[a].add(b)
+        graph[b].add(a)
+
+    # dfs
+    visit = set()
+
+    def dfs(node):
+        if node in visit:
+            return False
+        visit.add(node)
+        for nei in graph[node]:
+            # remove node in nei, prevent go back
+            graph[nei].remove(node)
+            if not dfs(nei):
+                return False
+        return True
+
+    if not dfs(0):
+        return False
+    return n == len(visit)
+
 
 
 
 n = 5
 edges = [[0,1],[1,2],[2,3],[1,3]]
 
-parents = list(range(n))
-
-def find(x):
-    if x != parents[x]:
-        parents[x] = find(parents[x])
-    return parents[x]
-
-def union(x, y):
-    parents[find(x)] = find(y)
-
-
-for a, b in edges:
-    union(a, b)
-
-for i in range(n):
-    find(i)
