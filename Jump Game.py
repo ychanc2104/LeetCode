@@ -15,24 +15,15 @@ def canJump(nums):
             reach = i + num
     return True
 
+# greedy, TC:O(n), SC:O(1)
+def canJump2(nums):
+    reach = nums[0]
+    for i in range(1, len(nums)):
+        if i > reach:
+            return False
+        reach = max(reach, i + nums[i])
+    return True
 
-
-
-
-def canJump3(nums):
-    step = nums[0]
-    target = len(nums) - 1
-    if step >= target:
-        return True
-    elif step == 0:
-        return False
-    else:
-        index = [i + num for i, num in enumerate(nums[1:step + 1])].index(
-            max([i + num for i, num in enumerate(nums[1:step + 1])]))
-        res = canJump3(nums[index + 1:])
-        if res:
-            return res
-    return False
 
 
 
