@@ -26,3 +26,24 @@ def decodeString(self, s: str) -> str:
             # TC:O(K+J)
             curStr = preStr + curStr * num
     return curStr
+
+
+def decodeString2(s: str) -> str:
+    count_stack = []
+    str_stack = ['']
+    num_set = set('0123456789')
+    count = 0
+    curStr = ''
+    for l in s:
+        if l in num_set:
+            count = count * 10 + int(l)
+        elif l == '[': # put prevStr into stack
+            count_stack.append(count)
+            str_stack.append(curStr)
+            count = 0
+            curStr = ''
+        elif l == ']': # count current str and pre count
+            curStr = str_stack.pop() + count_stack.pop() * curStr
+        else:
+            curStr += l
+    return curStr
