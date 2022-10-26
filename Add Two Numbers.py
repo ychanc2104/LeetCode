@@ -43,7 +43,7 @@ def addTwoNumbers(l1, l2):
     return dummy.next
 
 # TC:O(max(N,M)), SC:O(max(N,M))
-def addTwoNumbers(l1, l2):
+def addTwoNumbers2(l1, l2):
     res = dummy = ListNode(-1)
     carry = 0
     while l1 or l2 or carry:
@@ -59,3 +59,17 @@ def addTwoNumbers(l1, l2):
         l2 = l2.next if l2 else l2
         res = res.next
     return dummy.next
+
+
+# TC:O(max(N,M)), SC:O(1)
+def addTwoNumbers3(l1, l2):
+    res = dummy = ListNode(-1)
+    carry = 0
+    while l1 or l2 or carry:
+        tempSum = (l1.val if l1 else 0) + (l2.val if l2 else 0) + carry
+        carry = tempSum // 10
+        val = tempSum % 10
+        dummy.next = ListNode(val)
+        dummy = dummy.next
+        l1, l2 = l1.next if l1 else l1, l2.next if l2 else l2
+    return res.next
