@@ -9,21 +9,15 @@
 #         self.left = None
 #         self.right = None
 
-# recursive dfs, TC:O(N), SC:O(N^2) N for recursive call and N for res
+# recursive dfs, TC:O(N), SC:O(N) N for recursive call
 def inorderSuccessor(root: TreeNode, p: TreeNode) -> Optional[TreeNode]:
-    # left=>root=>right
-    res = []
-
-    def dfs(root):
-        if root:
-            dfs(root.left)
-            if root.val > p.val:
-                res.append(root)
-            dfs(root.right)
-
-    dfs(root)
-    # print(res)
-    return res[0] if res else None
+    if not root:
+        return root
+    if root.val <= p.val:
+        return inorderSuccessor(root.right, p)
+    else:
+        temp = inorderSuccessor(root.left, p)
+        return temp if temp else root
 
 # iterative dfs, TC:O(N), SC:O(N)
 def inorderSuccessor2(root: TreeNode, p: TreeNode) -> Optional[TreeNode]:
