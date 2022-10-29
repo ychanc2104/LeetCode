@@ -1,7 +1,7 @@
 # https://leetcode.com/problems/isomorphic-strings/description/
 
 
-#
+# hash table, TC:O(n), SC:O(1)
 def isIsomorphic( s: str, t: str) -> bool:
     # no two char map to the same char, ex: b=>a and c=>a
     # should be 1 vs 1 for any char
