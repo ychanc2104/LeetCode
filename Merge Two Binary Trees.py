@@ -8,7 +8,7 @@ class TreeNode:
         self.left = left
         self.right = right
 
-# first thought, create another tree, O(max(N,M)), SC:O(max(N,M))
+# first thought, create another tree, O(min(N,M)), SC:O(min(N,M))
 def mergeTrees(root1: Optional[TreeNode], root2: Optional[TreeNode]) -> Optional[TreeNode]:
     if not root1 and not root2: return None
     root = TreeNode((root1.val if root1 else 0) + (root2.val if root2 else 0))
@@ -17,7 +17,7 @@ def mergeTrees(root1: Optional[TreeNode], root2: Optional[TreeNode]) -> Optional
     return root
 
 
-# use existing tree, O(max(N,M)), SC:O(max(N,M))
+# use existing tree, O(min(N,M)), SC:O(min(N,M))
 def mergeTrees2(root1: Optional[TreeNode], root2: Optional[TreeNode]) -> Optional[TreeNode]:
     if not root1 or not root2: return root1 or root2
     root1.val += (root2.val if root2 else 0)
