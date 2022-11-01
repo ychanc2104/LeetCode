@@ -52,3 +52,30 @@ def countComponents2(n: int, edges) -> int:
             dfs(i)
             res += 1
     return res
+
+# union-find with rank compression, TC:O(E*alpha(n)) alpha(n) is inverse Ackermann function, SC:O(n)
+def countComponents3(n: int, edges) -> int:
+    parent = [i for i in range(n)]
+    rank = [0] * n
+    def find(x):
+        px = parent[x]
+        if x != px:
+            parent[x] = find(px)
+        return parent[x]
+    # smaller rank belong to bigger rank
+    def union(x, y):
+        px, py = find(x), find(y)
+        # parent[px] = py
+        if rank[px] == rank[py]:
+            parent[px] = py
+            rank[py] += 1
+        elif rank[px] > rank[py]:
+            parent[py] = px
+        else:
+            parent[px] = py
+    for a,b in edges:
+        union(a, b)
+    for i in range(n):
+        find(i)
+    return len(set(parent))
+
