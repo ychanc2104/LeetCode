@@ -2,6 +2,7 @@
 # https://leetcode.com/problems/minimum-knight-moves/discuss/947138/Python-3-or-BFS-DFS-Math-or-Explanation
 
 import collections
+from functools import lru_cache
 
 # BFS, first thought, TC:O(MN), M=x, N=y, SC:O(MN)
 def minKnightMoves(x: int, y: int) -> int:
@@ -45,3 +46,16 @@ def minKnightMoves(x: int, y: int) -> int:
     res = dfs(abs(x), abs(y))
     # print(res)
     return res
+
+# top-down dp
+@lru_cache(None)
+def minKnightMoves(self, x: int, y: int) -> int:
+    # 0,0 to x,y
+    # 1,1 takes two steps
+    if x < 0 or y < 0:
+        return self.minKnightMoves(abs(x), abs(y))
+    if x == 0 and y == 0:
+        return 0
+    if x + y == 2: # x+y==2
+        return 2
+    return min(self.minKnightMoves(abs(x-2), abs(y-1))+1, self.minKnightMoves(abs(x-1), abs(y-2))+1)
