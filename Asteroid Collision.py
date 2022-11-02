@@ -23,7 +23,7 @@ def asteroidCollision(asteroids):
     return stack
 
 # clean stack, TC:O(n), SC:O(1) if don't take result into account, O(n)
-def asteroidCollision(asteroids):
+def asteroidCollision2(asteroids):
     # 5,10,-5
     # -2,-1,1,2
     stack = []
@@ -43,4 +43,23 @@ def asteroidCollision(asteroids):
                 break
         else:
             stack.append(cur)
+    return stack
+
+
+# clean stack, TC:O(n), SC:O(1) if don't take result into account, O(n)
+def asteroidCollision3(asteroids):
+    # collide, only when left is positive and right is negative
+    stack = []
+    for asteroid in asteroids:
+        while stack and stack[-1] > 0 and asteroid < 0:
+            # collide
+            if -asteroid > stack[-1]:
+                stack.pop()
+            elif -asteroid == stack[-1]:
+                stack.pop()
+                break # both explode
+            else:
+                break # do not append
+        else:
+            stack.append(asteroid)
     return stack
