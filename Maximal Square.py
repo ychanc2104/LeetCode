@@ -67,6 +67,44 @@ def maximalSquare3(matrix) -> int:
     return maxLen ** 2
 
 
+# 2d dp, TC:O(MN), SC:O(MN)
+def maximalSquare4(matrix) -> int:
+    # dp[i][j] = min(dp[i][j-1], dp[i-1][j], dp[i-1][j-1]) + 1
+    n, m = len(matrix), len(matrix[0])
+    dp = [[0] * m for i in range(n)]
+    res = 0
+    for i in range(n):
+        for j in range(m):
+            if matrix[i][j] == '0' or i == 0 or j == 0 :
+                dp[i][j] = int(matrix[i][j])
+            else:
+                dp[i][j] = min(dp[i][j-1], dp[i-1][j], dp[i-1][j-1]) + 1
+            res = max(res, dp[i][j])
+    return res**2
+
+
+# 1d dp, TC:O(MN), SC:O(M)
+def maximalSquare5(matrix) -> int:
+    # dp[i][j] = min(dp[i][j-1], dp[i-1][j], dp[i-1][j-1]) + 1
+    n, m = len(matrix), len(matrix[0])
+    dp = [0] * m
+    prev = 0
+    res = 0
+    for i in range(n):
+        for j in range(m):
+            temp = dp[j] #
+            if matrix[i][j] == '0' or i == 0 or j == 0:
+                dp[j] = int(matrix[i][j])
+            else:
+                dp[j] = min(dp[j], dp[j-1], prev) + 1
+            res = max(res, dp[j])
+            prev = temp # prev row
+    return res**2
+
+
+
+
+
 matrix = [["1","0","1","0","0"],["1","0","1","1","1"],["1","1","1","1","1"],["1","0","0","1","0"]]
 
 
