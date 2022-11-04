@@ -1,5 +1,6 @@
 # https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/
 
+import collections
 
 # Definition for a binary tree node.
 # class TreeNode:
@@ -32,7 +33,7 @@ def zigzagLevelOrder(root):
 
 
 # clean, BFS level order traversal, TC:O(N), SC:O(N)
-def zigzagLevelOrder(root):
+def zigzagLevelOrder2(root):
     # BFS
     queue = [root]
     direction = 1
@@ -48,4 +49,23 @@ def zigzagLevelOrder(root):
         queue = leafs
         res.append(temp[::direction])
         direction *= -1
+    return res
+
+# dfs, TC:O(N), SC:O(N)
+def zigzagLevelOrder3(root):
+    res = []
+
+    def dfs(node, level=0):
+        if not node: return
+        if len(res) == level:
+            res.append(collections.deque([]))
+        if level & 1:  # odd
+            res[level].appendleft(node.val)
+        else:
+            res[level].append(node.val)
+
+        dfs(node.left, level + 1)
+        dfs(node.right, level + 1)
+
+    dfs(root)
     return res
