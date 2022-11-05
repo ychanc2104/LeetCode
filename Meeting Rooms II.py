@@ -80,3 +80,20 @@ def minMeetingRooms4(intervals) -> int:    # if overlapping => add one room
             heapq.heappush(rooms, e)
 
     return len(rooms)
+
+
+# greedy, TC:O(nlogn), SC:O(n)
+def minMeetingRooms5(intervals) -> int:
+    # 0,5,15
+    # 10,20,30
+    start = sorted([s for s,e in intervals])
+    end = sorted([e for s,e in intervals])
+    res = 0
+    i, j = 0, 0
+    while i < len(start):
+        if start[i] >= end[j]: # not overlapping, remove a room
+            res -= 1
+            j += 1
+        i += 1
+        res += 1
+    return res
