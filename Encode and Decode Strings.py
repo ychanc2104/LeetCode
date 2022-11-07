@@ -49,6 +49,38 @@ class Codec2:
             pos += length+1
         return res
 
+# store digit and string length into encode string
+class Codec3:
+    def encode(self, strs: List[str]) -> str:
+        """Encodes a list of strings to a single string.
+        """
+        # store length into encode string
+        res = []
+        for s in strs:
+            l = len(s)
+            if 0 <= l <= 9:
+                digit = 1
+            elif l <= 99:
+                digit = 2
+            else:
+                digit = 3
+            res.extend([str(digit), str(l), s])
+        return ''.join(res)
+
+    def decode(self, s: str) -> List[str]:
+        """Decodes a single string to a list of strings.
+        """
+        res = []
+        n = len(s)
+        L = 0
+        while L < n:
+            digit = int(s[L])
+            l = int(s[L + 1:L + digit + 1])
+            L += digit
+            res.append(s[L + 1: L + l + 1])
+            L += l + 1
+        return res
+
 
 # Your Codec object will be instantiated and called as such:
 # codec = Codec()
