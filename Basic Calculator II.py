@@ -50,3 +50,45 @@ def calculate2(s: str) -> int:
             curr_num = ''
             prev_sign = e
     return res + prev_num
+
+
+# use stack, TC:O(N), SC:O(N)
+def calculate3(s: str) -> int:
+    # num => add to curNum
+    # +,- => add sign*curNum to stack
+    # *,/ => stack.pop()*,/curNum
+    stack = []
+    curNum = 0
+    prevSign = '+'
+    for l in s+'+':
+        if l == ' ': continue
+        if l in '0123456789':
+            curNum = curNum * 10 + int(l)
+            continue
+        if prevSign in '+-':
+            stack.append(curNum if prevSign == '+' else -curNum)
+        elif prevSign in '*/':
+            stack.append(stack.pop() * curNum if prevSign == '*' else int(stack.pop() / curNum))
+        prevSign = l
+        curNum = 0
+    return sum(stack)
+
+# space optimized, TC:O(N), SC:O(1)
+def calculate4(s: str) -> int:
+    curNum = 0
+    prevNum = 0
+    res = 0
+    prevSign = '+'
+    for l in s+'+':
+        if l == ' ': continue
+        if l in '0123456789':
+            curNum = curNum * 10 + int(l)
+            continue
+        if prevSign in '+-':
+            res += prevNum
+            prevNum = curNum if prevSign == '+' else -curNum
+        elif prevSign in '*/':
+            prevNum = prevNum * curNum if prevSign == '*' else int(prevNum / curNum)
+        prevSign = l
+        curNum = 0
+    return res + prevNum
