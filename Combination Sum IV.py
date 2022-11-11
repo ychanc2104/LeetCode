@@ -35,3 +35,15 @@ def combinationSum42(nums: list, target: int) -> int:
             dp[i] += dp[i-num]
         #print(dp[i])
     return dp[target]
+
+# bottom-up dp, TC:O(N*T), SC:O(T), T is target
+def combinationSum43(nums: List[int], target: int) -> int:
+    # dp[0] = 1, 1 => 1, 2 => 1+1, 3=> dp[3-1] + dp[3-2] + dp[3-3] = 4
+    # dp[4] = dp[4-1] + dp[4-2] + dp[4-1] = 1+2+4 = 7
+    dp = [0] * (target + 1)
+    dp[0] = 1
+    for t in range(1, target + 1):
+        for num in nums:
+            if t < num: continue
+            dp[t] += dp[t - num]
+    return dp[-1]
