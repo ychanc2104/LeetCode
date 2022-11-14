@@ -53,3 +53,17 @@ def subsets4(nums):
 
     backtrack(0)
     return res
+
+# backtracking, TC:O(N*2^N), SC:O(N)
+def subsets5(nums):
+    # 1,2,3 1,3 2 2,3 3
+    res = []
+    path = []
+    def backtrack(pos):
+        res.append(path[:])
+        for i in range(pos, len(nums)):
+            path.append(nums[i])
+            backtrack(i+1)
+            path.pop()
+    backtrack(0)
+    return res
