@@ -62,5 +62,27 @@ def combine4(n, k):
         combs = temp
     return combs
 
+
+def combine5(n: int, k: int):
+    res = []
+    path = []
+    def backtrack(pos):
+        if len(path) == k:
+            # TC:O(k)
+            res.append(path[:])
+            # end
+            return
+
+        for i in range(pos, n):
+            # add i+1 to path
+            path.append(i + 1)
+            # to next number
+            backtrack(i + 1)
+            # backtrack
+            path.pop()
+
+    backtrack(0)
+    return res
+
 res = combine(4, 2)
-res4 = combine4(4, 2)
+res4 = combine5(4, 2)
