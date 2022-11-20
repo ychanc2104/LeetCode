@@ -24,7 +24,7 @@ def calculate(s: str) -> int:
             prev_sign = 1
         elif e == ')':
             res += prev_sign * num
-            res = stack.pop() * res
+            res *= stack.pop()
             res += stack.pop()
             num = 0
     return res + prev_sign * num
