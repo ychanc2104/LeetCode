@@ -108,8 +108,28 @@ def validTree4(n: int, edges) -> bool:    # cycle check
         return False
     return n == len(visit)
 
+# dfs, TC:O(n+E), SC:O(n+E)
+def validTree5(n: int, edges) -> bool:    # cycle check
+    if len(edges) != n - 1: return False
+    if not edges: return True
+    graph = collections.defaultdict(set)
+    for a, b in edges:
+        graph[a].add(b)
+        graph[b].add(a)
 
+    def dfs(node) -> bool:
+        if node in visited: return True
+        visited.add(node)
+        for nei in graph[node]:
+            graph[nei].discard(node)
+            if dfs(nei):
+                return True
+        return False
 
+    visited = set()
+    if dfs(edges[0][0]):  # start from any node
+        return False
+    return True
 
 n = 5
 edges = [[0,1],[1,2],[2,3],[1,3]]
