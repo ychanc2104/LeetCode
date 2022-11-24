@@ -169,3 +169,23 @@ def exist4(board, word: str) -> bool:
             if dfs(0, i, j):
                 return True
     return False
+
+# standard dfs, TC:O(N*M*3^L), SC:O(L), L = len(word) for recursive call
+def exist(board: List[List[str]], word: str) -> bool:
+    n, m = len(board), len(board[0])
+    def dfs(pos, i, j):
+        if pos >= len(word):
+            return True
+        if i < 0 or j < 0 or i >= n or j >= m or board[i][j] != word[pos]:
+            return False
+        char = board[i][j]
+        board[i][j] = '#'
+        if dfs(pos+1, i+1, j) or dfs(pos+1, i-1, j) or dfs(pos+1, i, j+1) or dfs(pos+1, i, j-1):
+            return True
+        board[i][j] = char
+        return False
+    for i in range(n):
+        for j in range(m):
+            if dfs(0, i, j):
+                return True
+    return False
