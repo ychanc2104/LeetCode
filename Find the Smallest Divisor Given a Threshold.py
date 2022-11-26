@@ -11,7 +11,7 @@ def smallestDivisor(self, nums: List[int], threshold: int) -> int:
         return res <= threshold
 
     # try each divisor
-    L, R = 1, max(nums) + 1
+    L, R = 1, max(nums)
     while L <= R:
         divisor = (L + R) // 2
         if check(divisor):
