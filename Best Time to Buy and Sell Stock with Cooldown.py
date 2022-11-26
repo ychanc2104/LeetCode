@@ -4,8 +4,8 @@
 # space optimized dp + state machine, TC:O(N), SC:O(1)
 def maxProfit(prices: List[int]) -> int:
     sold = float("-inf")  # no way to sell (max profit end with sold)
-    held = -prices[0]  # buy first (max profit end with held)
-    reset = 0  # (max profit end with reset)
+    held = -prices[0]  # buy first (max profit to hold stock in [0,i])
+    reset = 0  # (max profit to reset in [0,i])
     for i in range(1, len(prices)):
         price = prices[i]
         presold = sold
