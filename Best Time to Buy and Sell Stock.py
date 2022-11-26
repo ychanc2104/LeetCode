@@ -24,6 +24,15 @@ def maxProfit2(prices) -> int:
         best = max(best, prices[i+1]-cur)
     return best
 
+# Kadane's algorithm, dp
+def maxProfit3(prices) -> int:
+    sold = 0 # max to sold stock in [0,i]
+    held = -prices[0] # max profit to hold stock in [0,i]
+    for i in range(1, len(prices)):
+        sold = max(sold, held + prices[i])
+        held = max(held, -prices[i])
+    return sold
+
 prices = [7,1,5,3,6,4,10,0,19,0]
 
 res = maxProfit(prices)
