@@ -2,7 +2,7 @@
 
 import collections
 
-# first thought, hash + sort, TC:O(), SC:O()
+# first thought, hash + sort, TC:O(nlogn), SC:O(n)
 def findWinners(matches: List[List[int]]) -> List[List[int]]:
     counter = collections.defaultdict(int)  # player: count of loss
     for w, l in matches:
