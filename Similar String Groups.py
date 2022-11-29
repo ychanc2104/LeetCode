@@ -36,11 +36,11 @@ def numSimilarGroups(strs: List[str]) -> int:
 def numSimilarGroups2(strs: List[str]) -> int:
     # check each pair
     def check(s1, s2):
-        res = []
+        count = 0
         for i, (l1, l2) in enumerate(zip(s1, s2)):
             if l1 == l2: continue
-            res.append(i)
-            if len(res) > 2: return False
+            count += 1
+            if count > 2: return False
         return True
 
     def find(x):
