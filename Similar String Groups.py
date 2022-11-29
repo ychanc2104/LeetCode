@@ -1,7 +1,7 @@
 # https://leetcode.com/problems/similar-string-groups/
 
 
-# first thought, union find, TC:O(), SC:O()
+# first thought, union find, TC:O((alpha(N)+M)N^2), SC:O(N)
 def numSimilarGroups(strs: List[str]) -> int:
     # check each pair
     def check(s1, s2):
@@ -32,7 +32,7 @@ def numSimilarGroups(strs: List[str]) -> int:
 
     return len(set([find(i) for i in range(len(strs))]))
 
-# optimized union find, TC:O(), SC:O()
+# optimized union find, TC:O((alpha(N)+M)N^2), SC:O(N)
 def numSimilarGroups2(strs: List[str]) -> int:
     # check each pair
     def check(s1, s2):
