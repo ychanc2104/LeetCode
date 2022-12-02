@@ -57,3 +57,28 @@ def findOrder2(numCourses: int, prerequisites):
         if not vis[x] and dfs_circle(x):
             return []
     return orders[::-1]
+
+# use in_degrees (Kahn’s algorithm), TC:O(V+N), SC:O(V+N)
+def findOrder3(numCourses: int, prerequisites):
+    # build graph
+    graph = collections.defaultdict(list)
+    indegrees = {i: 0 for i in range(numCourses)}
+    for cur, pre in prerequisites:
+        graph[pre].append(cur)
+        indegrees[cur] += 1
+
+    # find course without pre
+    queue = collections.deque([c for c, v in indegrees.items() if v == 0])
+    res = []
+    n = len(indegrees)
+    while queue:
+        n -= len(queue)
+        leafs = []
+        for node in queue:
+            res.append(node)
+            for nei in graph[node]:
+                indegrees[nei] -= 1
+                if indegrees[nei] == 0:
+                    leafs.append(nei)
+        queue = leafs
+    return res if n == 0 else []
