@@ -124,6 +124,30 @@ def canFinish4(numCourses: int, prerequisites):
                 queue.append(pre)
     return len(visit) == numCourses
 
+# topsort, Kahn's algorithm, TC:O(V+E), SC:O(V+E)
+def canFinish5(numCourses: int, prerequisites):
+    # if cycle detected => return False
+    graph = collections.defaultdict(list)
+    indegrees = collections.defaultdict(int)
+    for cur, pre in prerequisites:
+        graph[pre].append(cur)
+        indegrees[cur] += 1
+        indegrees[pre] += 0
+
+    queue = [c for c, v in indegrees.items() if v == 0]
+    n = len(indegrees)  # total courses
+    while queue:
+        n -= len(queue)
+        leafs = []
+        for node in queue:
+            for nei in graph[node]:
+                indegrees[nei] -= 1
+                if indegrees[nei] == 0:
+                    leafs.append(nei)
+        queue = leafs
+    return False if n else True
+
+
 numCourses = 7
 prerequisites = [[1,0],[0,3],[0,2],[3,2],[2,5],[4,5],[5,6],[2,4]]
 
