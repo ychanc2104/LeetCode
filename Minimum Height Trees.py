@@ -87,3 +87,24 @@ def findMinHeightTrees3(n: int, edges):
         drop = new_drop
     return drop
 
+# topsort, TC:O(V+E), SC:O(V+E)
+def findMinHeightTrees4(n: int, edges):
+    graph = collections.defaultdict(list)
+    indegrees = {i:0 for i in range(n)}
+    for a,b in edges:
+        graph[a].append(b)
+        graph[b].append(a)
+        indegrees[a] += 1
+        indegrees[b] += 1
+    # find outer
+    queue = [n for n,v in indegrees.items() if v <= 1]
+    while n > 2:
+        n -= len(queue)
+        leafs = []
+        for node in queue:
+            for nei in graph[node]:
+                indegrees[nei] -= 1
+                if indegrees[nei] == 1:
+                    leafs.append(nei)
+        queue = leafs
+    return queue
