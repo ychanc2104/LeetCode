@@ -45,7 +45,39 @@ def alienOrder(words) -> str:
         return ""
     return ''.join(res)
 
-
+def alienOrder2(words) -> str:
+    # build the graph
+    graph = collections.defaultdict(set)
+    indegrees = {c:0 for word in words for c in word}
+    n = len(words)
+    for i in range(n):
+        for j in range(i+1, n):
+            w1, w2 = words[i], words[j]
+            # if w1[0] != w2[0]: continue
+            for k in range(min(len(w1), len(w2))):
+                l1, l2 = w1[k], w2[k]
+                if l1 != l2:
+                    if l2 in graph[l1]: break
+                    indegrees[l2] += 1
+                    graph[l1].add(l2)
+                    break
+            else: # not lexicographically order
+                if len(w1) > len(w2): return ''
+    #print(graph, indegrees)
+    queue = [l for l,c in indegrees.items() if c == 0]
+    res = []
+    count = len(indegrees.keys()) # prevent cycle
+    while queue:
+        leafs = []
+        for n in queue:
+            res.append(n)
+            count -= 1
+            for nei in graph[n]:
+                indegrees[nei] -= 1
+                if indegrees[nei] == 0:
+                    leafs.append(nei)
+        queue = leafs
+    return ''.join(res) if count == 0 else ''
 
 
 for a,b in zip((1,2,3),(3,2)):
