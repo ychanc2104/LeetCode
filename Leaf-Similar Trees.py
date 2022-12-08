@@ -1,5 +1,5 @@
 # https://leetcode.com/problems/leaf-similar-trees/
-
+# https://leetcode.com/problems/leaf-similar-trees/solutions/152329/c-java-python-o-h-space/
 
 # first thought dfs, TC:O(N+M), SC:O(N+M)
 def leafSimilar(root1: Optional[TreeNode], root2: Optional[TreeNode]) -> bool:
