@@ -50,7 +50,7 @@ def countNodes3(root: Optional[TreeNode]) -> int:
     return 2**h - 1 + L
 
 
-# binary search and recursive call, TC:O(logN*logN), SC:O(1)
+# binary search and recursive call, TC:O(logN*logN), SC:O(logN)
 def countNodes4(root: Optional[TreeNode]) -> int:
     def getHeight(root):
         h = 0
@@ -78,3 +78,28 @@ def countNodes4(root: Optional[TreeNode]) -> int:
             R = mid - 1
     return 2**h - 1 + L
 
+# binary search and recursive call, TC:O(logN*logN), SC:O(logN)
+def countNodes5(root) -> int:
+    # get height => get max total nodes
+    # h => 2^h - 1 (full binary tree)
+    if not root: return 0
+    def getHeight(root):
+        if not root: return 0
+        return 1 + getHeight(root.left) # from 1 to h
+    h = getHeight(root)
+    def exist(root, depth, lo, hi, idx):
+        if depth == h: return root != None
+        mid = (lo + hi)//2
+        if idx > mid: # to right
+            return exist(root.right, depth+1, mid+1, hi, idx)
+        else: # to left
+            return exist(root.left, depth+1, lo, mid, idx)
+
+    L, R = 0, 2**(h-1)-1 # last level index
+    while L <= R:
+        mid = (L + R)//2
+        if exist(root, 1, 0, 2**(h-1)-1, mid): # move L
+            L = mid + 1
+        else:
+            R = mid - 1
+    return L + (2**(h-1) - 1) # L + total nodes from height=1 to h-1
