@@ -46,3 +46,25 @@ def hasPath2(maze: List[List[int]], start: List[int], destination: List[int]) ->
                 cn += co
             queue.append((rn-ro, cn-co)) # start from corner
     return False
+
+
+# bfs, TC:O(mn(m+n)) in worst, SC:O(mn)
+def hasPath3(maze: List[List[int]], start: List[int], destination: List[int]) -> bool:
+    n, m = len(maze), len(maze[0])
+    visited = [[False]*m for _ in range(n)]
+    dirs = ((1,0),(0,1),(-1,0),(0,-1))
+    # bfs
+    queue = collections.deque([start])
+    while queue:
+        r, c = queue.popleft()
+        for ro,co in dirs: # four directions
+            rn, cn = r, c
+            # go to the end
+            while 0<=rn+ro<n and 0<=cn+co<m and maze[rn+ro][cn+co]==0:
+                rn += ro
+                cn += co
+            if visited[rn][cn]: continue
+            visited[rn][cn] = True
+            if [rn,cn] == destination: return True
+            queue.append((rn, cn)) # start from corner
+    return False
