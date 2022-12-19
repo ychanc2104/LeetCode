@@ -34,8 +34,8 @@ def strStr(haystack: str, needle: str) -> int:
                 k = failure_fun[k - 1]
     return -1
 
-# use Rabin-Karp rolling hash, TC:O(), SC:O(1)
-def strStr(haystack: str, needle: str) -> int:
+# use Rabin-Karp rolling hash, TC:O(N), SC:O(1)
+def strStr2(haystack: str, needle: str) -> int:
     def f(c):
         return ord(c)-ord('A')
 
@@ -49,4 +49,23 @@ def strStr(haystack: str, needle: str) -> int:
     for i in range(1, h-n+1):
         hash_h = (d*(hash_h-f(haystack[i-1])*nd)+f(haystack[i+n-1]))%m    # e.g. 10*(1234-1*10**3)+5=2345
         if hash_n == hash_h: return i
+    return -1
+
+
+# use Rabin-Karp rolling hash, TC:O(N), SC:O(1)
+def strStr3(haystack: str, needle: str) -> int:
+    # rolling hash, TC:O(N)
+    to_int = lambda x: ord(x) - ord('a')
+    n, m = len(haystack), len(needle)
+    if n < m: return -1
+    target, cur = 0, 0
+    for i in range(m): # TC:O(m)
+        target = target * 26 + to_int(needle[i])
+        cur = cur * 26 + to_int(haystack[i])
+    if cur == target: return 0
+    multiplier = 26**m
+    for i in range(m, n): # TC:O(N-M)
+        cur = cur*26 - to_int(haystack[i-m])*multiplier + to_int(haystack[i])
+        if target == cur:
+            return i-m+1
     return -1
