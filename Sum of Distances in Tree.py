@@ -19,7 +19,7 @@ def sumOfDistancesInTree(n: int, edges: List[List[int]]) -> List[int]:
             if nei == pre: continue  # don't go back, look for its children
             dfs(root, nei)
             count[root] += count[nei]
-            res[root] += res[nei] + count[nei] # build correct res[0]
+            res[root] += res[nei] + count[nei] # build correct res[0], distance of root = dist of nei + number of nei's nodes
 
     def dfs2(pre=-1, root=0):  # preorder
         for nei in graph[root]:
