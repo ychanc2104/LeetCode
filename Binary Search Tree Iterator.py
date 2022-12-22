@@ -42,21 +42,21 @@ class BSTIterator2:
                 yield from dfs(root.left)
                 yield root
                 yield from dfs(root.right)
-        self.iterator = dfs(root)
+        self.generator = dfs(root)
 
     # TC:O(1), SC:O(1)
     def next(self) -> int:
         if self.stack:
             val = self.stack.pop().val
         else:
-            val = next(self.iterator, TreeNode()).val
+            val = next(self.generator, TreeNode()).val
         return val
 
     # TC:O(1), SC:O(1)
     def hasNext(self) -> bool:
         if self.stack:
             return True
-        node = next(self.iterator, None)
+        node = next(self.generator, None)
         if not node: return False
         self.stack.append(node)
         return True
