@@ -26,7 +26,7 @@ def copyRandomList(head: 'Optional[Node]') -> 'Optional[Node]':
     return dfs(head)
 
 # without memo, TC:O(N), SC:O(1) no extra space except clone
-def copyRandomList(head: 'Optional[Node]') -> 'Optional[Node]':
+def copyRandomList2(head: 'Optional[Node]') -> 'Optional[Node]':
     if not head: return None
     # build weaved LL
     weaved = dummy = head
