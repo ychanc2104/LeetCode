@@ -1,5 +1,5 @@
-# https://leetcode.com/problems/minimum-size-subarray-sum/description/?envType=study-plan&id=binary-search-ii
-
+# https://leetcode.com/problems/minimum-size-subarray-sum/description/
+# https://leetcode.com/problems/minimum-size-subarray-sum/solutions/433123/java-c-python-sliding-window/
 
 # first thought, two pointers, TC:O(N), SC:O(1)
 def minSubArrayLen(target: int, nums: List[int]) -> int:
@@ -21,7 +21,8 @@ def minSubArrayLen(target: int, nums: List[int]) -> int:
 def minSubArrayLen2(target: int, nums: List[int]) -> int:
     L = 0
     tempSum = 0
-    res = float("inf")
+    n = len(nums)
+    res = n+1
     for R in range(len(nums)):
         tempSum += nums[R]
         while tempSum >= target:  # update and move L
@@ -29,11 +30,11 @@ def minSubArrayLen2(target: int, nums: List[int]) -> int:
             tempSum -= nums[L]
             L += 1
 
-    return res if res != float("inf") else 0
+    return res % (n+1)
 
 
 # prefix sum + binary search, TC:O(NlogN), TC:O(N)
-def minSubArrayLen(target: int, nums: List[int]) -> int:
+def minSubArrayLen3(target: int, nums: List[int]) -> int:
     preSum = []
     tempSum = 0
     for num in nums:
