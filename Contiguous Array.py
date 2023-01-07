@@ -18,3 +18,20 @@ def findMaxLength(nums) -> int:
             memo[count] = i
     # print(memo)
     return res
+
+# hashtable + prefix sum, TC:O(n), SC:O(n)
+def findMaxLength2(nums: List[int]) -> int:
+    # 0:-1, 1:+1
+    memo = {0:-1, 1:1}
+    prefix = {0:-1}
+    n = len(nums)
+    res = 0
+    s = 0
+    for i in range(n):
+        target = s + memo[nums[i]]
+        if target in prefix: # s - prefix[x] + memo[nums[i]] = 0, valid in [x+1,i]
+            res = max(res, i - prefix[target])
+        s += memo[nums[i]]
+        if s not in prefix:
+            prefix[s] = i
+    return res
