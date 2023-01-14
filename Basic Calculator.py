@@ -29,3 +29,35 @@ def calculate(s: str) -> int:
             num = 0
     return res + prev_sign * num
 
+
+# correct for I, II and III, TC:O(N), SC:O(N)
+def calculate2(s: str) -> int:
+    # 1 - (2+3)
+    presign = '+'
+    stack = []
+    curnum = 0
+    for e in s+'+':
+        if e in '0123456789':
+            curnum = curnum*10 + int(e)
+            continue
+        elif e == '(':
+            stack.append(presign)
+            stack.append(e)
+            presign = '+'
+        elif e in '+-)':
+            if presign == '+':
+                stack.append(curnum)
+            elif presign == '-':
+                stack.append(-curnum)
+            # add previous num to stack
+            if e == ')':
+                curnum = 0
+                while stack[-1] != '(':
+                    curnum += stack.pop()
+                stack.pop() # pop out '('
+                presign = stack.pop()
+            else:
+                presign = e
+                curnum = 0
+        # print(stack)
+    return sum(stack)
