@@ -1,6 +1,8 @@
 # https://leetcode.com/problems/range-sum-query-mutable/description/
 # https://leetcode.com/problems/range-sum-query-mutable/solutions/649011/python-recursive-segment-tree-approach/?languageTags=python
 # https://leetcode.com/problems/range-sum-query-mutable/solutions/75730/148ms-python-solution-binary-indexed-tree/
+# https://yuanchieh.page/posts/2022/2022-05-23-%E7%AE%97%E6%B3%95segment-tree-%E8%88%87-binary-indexed-tree-%E8%A7%A3%E9%A1%8C%E6%95%B4%E7%90%86/
+
 
 import collections
 
@@ -66,7 +68,7 @@ class NumArray2:
             k = i + 1
             while k <= self.n:
                 self.c[k] += nums[i] # prefix sum
-                k += (k & -k) # 1, 1+1, 1+1+2, 1+1+2+4, adding rightmost bit
+                k += (k & -k) # 1, 1+1, 1+1+2, 1+1+2+4, adding leftmost bit
     # TC:O(logN)
     def update(self, i, val):
         diff, self.a[i] = val - self.a[i], val
@@ -116,6 +118,41 @@ class NumArray3:
             sm += self.tree[i]
             i -= (i & (-i))
         return sm
+
+# binary indexed tree
+class NumArray4:
+
+    # TC:O(N), SC:O(N)
+    def __init__(self, nums: List[int]):
+        self.nums = nums
+        self.BIT = [0] * (len(nums) + 1)
+        for i in range(1, len(nums)+1):
+            self.BIT[i] += nums[i-1]
+            if i + (i&-i) <= len(nums):
+                # BIT[1+1] += BIT[1], BIT[3+1] += BIT[3]
+                self.BIT[i + (i&-i)] += self.BIT[i]
+    # TC:O(logN)
+    def update(self, index: int, val: int) -> None:
+        diff = val - self.nums[index]
+        self.nums[index] = val
+        index += 1
+        while index <= len(self.nums):
+            self.BIT[index] += diff # update all affected arr
+            index += (index & -index)
+
+    # TC:O(logN)
+    def sumRange(self, left: int, right: int) -> int:
+        L = 0
+        while left > 0:
+            L += self.BIT[left]
+            left -= (left&-left)
+        R = 0
+        right += 1
+        while right > 0:
+            R += self.BIT[right]
+            right -= (right&-right)
+        return R - L
+
 
 # Your NumArray object will be instantiated and called as such:
 nums = [1,3,5]
