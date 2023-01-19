@@ -1,6 +1,7 @@
 # https://leetcode.com/problems/basic-calculator/
 # https://leetcode.com/problems/basic-calculator/discuss/62424/Python-concise-solution-with-stack.
 # https://leetcode.com/problems/basic-calculator/discuss/1456850/Python-Basic-Calculator-I-II-III-easy-solution-detailed-explanation
+# https://leetcode.com/problems/basic-calculator/solutions/2017431/stop-hating-parsing-problems-and-start-having-fun/
 
 # use stack, TC:O(n), SC:O(n)
 def calculate(s: str) -> int:
