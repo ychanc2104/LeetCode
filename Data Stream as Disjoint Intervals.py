@@ -71,3 +71,30 @@ class SummaryRanges2:
 
     def getIntervals(self) -> List[List[int]]:
         return sorted(self.intervals.values())
+
+
+# use set
+class SummaryRanges3:
+
+    # SC:SO(N)
+    def __init__(self):
+        self.nums = set()
+
+    # TC:O(1)
+    def addNum(self, value: int) -> None:
+        self.nums.add(value)
+
+    # TC:O(NlogN)
+    def getIntervals(self) -> List[List[int]]:
+        res = []
+        s, e = None, None
+        for num in sorted(self.nums):
+            if s is None and e is None:
+                s = e = num
+            elif e + 1 == num:
+                e += 1
+            else:
+                res.append([s, e])
+                s = e = num
+        res.append([s, e])
+        return res
