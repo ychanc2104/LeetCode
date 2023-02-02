@@ -1,5 +1,6 @@
 # https://leetcode.com/problems/longest-common-subsequence/
 
+import functools
 
 # with hint, TC: O(nm)
 # 1. Try dynamic programming. DP[i][j] represents the longest common subsequence of text1[0 ... i] & text2[0 ... j].
@@ -33,3 +34,19 @@ def longestCommonSubsequence2(text1: str, text2: str) -> int:
                 dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
     # print(dp)
     return dp[n][m]
+
+
+# top-down dp, TC: O(nm), SC:O(nm)
+def longestCommonSubsequence3(text1: str, text2: str) -> int:
+    n, m = len(text1), len(text2)
+
+    @functools.lru_cache(None)
+    def helper(i, j):
+        if i == n or j == m:
+            return 0
+
+        if text1[i] == text2[j]:
+            return 1 + helper(i + 1, j + 1)
+        return max(helper(i + 1, j), helper(i, j + 1))
+
+    return helper(0, 0)
