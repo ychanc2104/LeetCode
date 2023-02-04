@@ -2,13 +2,14 @@
 # https://leetcode.com/problems/number-of-longest-increasing-subsequence/solutions/835323/python-3-dp-explanation/
 
 
+# dp, TC:O(N^2), SC:O(N)
 def findNumberOfLIS(nums: List[int]) -> int:
     n = len(nums)
     dp = [1] * n
     cnt = [1] * n
     M = 1
-    for i in range(n):  # 1, 2
-        for j in range(i):  # 0, 0 1
+    for i in range(n):
+        for j in range(i):
             if nums[j] < nums[i]:
                 if dp[i] < dp[j] + 1:
                     dp[i] = dp[j] + 1  # update longest length
