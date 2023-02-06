@@ -135,6 +135,31 @@ def longestPalindrome7(s: str) -> str:
     #print(sn,dp)
     return s[(mC - mR)//2 : (mC + mR)//2] # left bound to right bound
 
+# Manacher algorithm, TC:O(n), SC:(n)
+def longestPalindrome8(s: str) -> str:
+# Transform S into T.
+    # For example, S = "abba", T = "^#a#b#b#a#$".
+    # ^ and $ signs are sentinels appended to each end to avoid bounds checking
+    T = f"^#{'#'.join(s)}#$"
+    n = len(T)
+    P = [0] * n
+    C = R = 0 # C is center, R is rightmost position
+    Cm = Rm = 0
+    for i in range(n-2): #  idx: 0 ~ n-3
+        # do not exceed right bound
+        P[i] = min(P[2*C - i], C + R - i)
+        # center expansion
+        while T[i + P[i] + 1] == T[i - P[i] - 1]:
+            P[i] += 1
+        # update center and radius and location of max substring
+        if i + P[i] > C + R:
+            C = i
+            R = P[i]
+            if R > Rm:
+                Cm, Rm = i, R
+
+    return s[(Cm-Rm)//2 : (Cm+Rm)//2]
+
 
 s = "aababa"
 
