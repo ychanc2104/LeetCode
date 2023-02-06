@@ -1,5 +1,4 @@
 # https://leetcode.com/problems/palindromic-substrings/
-#
 
 
 ## first thought, TC: O(n^3), O(n) for check and O(n^2) for iteration
@@ -26,16 +25,7 @@ def countSubstrings2(s: str) -> int:
     # bottom-up
     for i in range(n-1,-1,-1):
         for j in range(i, n):
-            print(i,j)
             dp[i][j] = (s[i]==s[j]) and (j-i<=1 or dp[i+1][j-1])
-            # or
-            # if j-i<=1:
-            #     dp[i][j] = True if s[i]==s[j] else False
-            # else:
-            #     if s[i]==s[j] and dp[i+1][j-1]:
-            #         dp[i][j] = True
-            #     else:
-            #         dp[i][j] = False
             if dp[i][j]:
                 ans += 1
     print(dp)
@@ -60,16 +50,24 @@ def countSubstrings3(s: str) -> int:
     return ans
 
 
-# def countSubstrings4(S) -> int:
-#     ans, n, i = 0, len(S), 0
-#     while (i < n):
-#         j, k = i - 1, i
-#         while k < n - 1 and S[k] == S[k + 1]: k += 1
-#         ans += (k - j) * (k - j + 1) // 2
-#         i, k = k + 1, k + 1
-#         while ~j and k < n and S[k] == S[j]:
-#             j, k, ans = j - 1, k + 1, ans + 1
-#     return ans
+## dp, TC: O(n^2), SC: O(n^2)
+def countSubstrings4(s: str) -> int:
+    # dp[i][j]: is s[i:j+1] palindrome
+    # xabax
+    res = 0
+    n = len(s)
+    dp = [[False] * n for _ in range(n)]
+    for i in range(n - 1, -1, -1):
+        for j in range(i, n):
+            if i == j:
+                dp[i][j] = True
+            else:
+                if s[i] == s[j]:
+                    if i + 1 == j or dp[i + 1][j - 1]:  # two string
+                        dp[i][j] = True
+            if dp[i][j]:
+                res += 1
+    return res
 
 s = "abbba"
 res = countSubstrings(s)
