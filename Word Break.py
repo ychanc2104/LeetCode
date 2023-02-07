@@ -1,6 +1,7 @@
 # https://leetcode.com/problems/word-break/
 # https://leetcode.com/problems/word-break/discuss/1455100/Python-3-solutions%3A-Top-down-DP-Bottom-up-DP-then-Optimised-with-Trie-Clean-and-Concise
 
+import functools
 
 # dp, O()
 def wordBreak(s: str, wordDict) -> bool:
@@ -54,7 +55,7 @@ def wordBreak3(s: str, wordDict) -> bool:
 
 
 #dp, TC:O(NMK + N^2), SC:O(N)
-def wordBreak(s: str, wordDict) -> bool:
+def wordBreak4(s: str, wordDict) -> bool:
     n = len(s)
     dp = [False] * (n+1)
     dp[0] = True
@@ -68,3 +69,16 @@ def wordBreak(s: str, wordDict) -> bool:
                 dp[i] = True
                 break
     return dp[-1]
+
+# top-down dp, TC:O(NM(N+K)), SC:O(NM)
+def wordBreak5(s: str, wordDict) -> bool:
+    wordDict_set = set(wordDict)
+    @functools.lru_cache(None)
+    def helper(s):
+        if s in wordDict_set:
+            return True
+        for word in wordDict:
+            if s.startswith(word) and helper(s[len(word):]):
+                return True
+        return False
+    return helper(s)
