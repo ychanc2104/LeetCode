@@ -1,5 +1,6 @@
 # https://leetcode.com/problems/unique-paths/
 # https://leetcode.com/problems/unique-paths/discuss/254228/Python-3-solutions%3A-Bottom-up-DP-Math-Picture-Explained-Clean-and-Concise
+# https://bugs.python.org/issue8692
 
 def uniquePaths(m, n):
     start = [0, 0]
@@ -57,21 +58,11 @@ def uniquePaths5(m, n):
         for j in range(1,n):
             dp[j] += dp[j-1]
     return dp[-1]
-# res = uniquePaths(20,12)
 
-# res2 = uniquePaths2(8, 12)
+# math, There are (h+v) total moves, once choose v steps or h steps, one choice remains
+# res = C(h+v, h) = (h+v)!/h!v!, h = n - 1(cols) and v = m - 1(rows)
+def uniquePaths6(m, n):
+    # k! can be computed in O(k(log⁡klog⁡log⁡k)^2) time.
+    return math.factorial(n+m-2)//math.factorial(n-1)//math.factorial(m-1)
 
-res3 = uniquePaths3(8, 12)
 
-res4 = uniquePaths4(8, 12)
-
-res5 = uniquePaths5(1, 5)
-
-m=3
-n=5
-dp = [1] * n
-for i in range(1, m):
-    print(i)
-    for j in range(1, n):
-        print(j)
-        dp[j] += dp[j - 1]
