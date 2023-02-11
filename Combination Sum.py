@@ -83,3 +83,24 @@ def combinationSum5(candidates, target: int):
             path.pop()
     backtrack(target)
     return res
+
+## backtracking, T: O(N*N^(M/min_cand)), min_cand=min(candidates), M=target, S:O(M/min_cand)
+def combinationSum6(candidates, target: int):
+    # f(n) = [i] + temp for temp in dp[n-i]
+    res = []
+    path = []
+
+    def backtrack(i, target):
+        if target < 0 or i == len(candidates):
+            return
+        if target == 0:
+            res.append(path[:])
+            return
+        num = candidates[i]
+        path.append(num)
+        backtrack(i, target - num)  # use
+        path.pop()
+        backtrack(i + 1, target)  # not used
+
+    backtrack(0, target)
+    return res
