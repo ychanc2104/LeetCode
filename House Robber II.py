@@ -22,3 +22,17 @@ def rob(nums) -> int:
     else:
         # choose nums[0] or do not choose
         return max(helper(nums[:-1]), helper(nums[1:]))
+
+
+# top-down dp, TC: O(n), SC: O(n)
+def rob2(nums) -> int:
+    # 1:n+1 and 0:n
+    def rob1(arr):
+        @functools.lru_cache(None)
+        def helper(i):
+            if i >= len(arr):
+                return 0
+            return max(helper(i+1), helper(i+2) + arr[i])
+        return helper(0)
+    n = len(nums)
+    return max(rob1(nums[:-1]), rob1(nums[1:]), nums[0])
