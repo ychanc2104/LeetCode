@@ -55,3 +55,21 @@ def minHeightShelves3(books: List[List[int]], shelfWidth: int) -> int:
                 height = max(height, books[j][1]) # update max height in the previous shlef
                 dp[i] = min(dp[i], height + dp[j]) # compare with current book height + previous shelf
         return dp[-1]
+
+
+# bottom-up dp, TC:O(N^2), SC:O(N)
+def minHeightShelves4(books: List[List[int]], shelfWidth: int) -> int:
+    n = len(books)
+    dp = [0] * (n+1) # min height of books[i:]
+    for i in range(n-1, -1, -1):
+        w, h = books[i]
+        dp[i] = dp[i+1] + h # new shlef
+        for j in range(i+1, n):
+            if w + books[j][0] > shelfWidth: # can't try put adj
+                break
+            # can try put adj
+            w += books[j][0]
+            h = max(h, books[j][1])
+            dp[i] = min(dp[i], dp[j+1] + h)
+
+    return dp[0]
