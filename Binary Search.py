@@ -109,6 +109,40 @@ def search_rightmost3(nums, target) -> int:
             R = mid - 1
     return R
 
+
+import bisect
+
+
+def bsearch_right(nums, target): # bissect_right
+    L, R = 0, len(nums) - 1
+    while L <= R:
+        mid = (L + R) // 2
+        if nums[mid] > target:
+            R = mid - 1
+        else:
+            L = mid + 1
+    return L  # [0,n]
+
+def bsearch_left(nums, target): # bissect_right
+    L, R = 0, len(nums) - 1
+    while L <= R:
+        mid = (L + R) // 2
+        if nums[mid] >= target:
+            R = mid - 1
+        else:
+            L = mid + 1
+    return L  # [0,n]
+
+
+nums = [1,2,3,3,3,4,5]
+target = 2
+idx1 = bsearch_right(nums, target)
+idx2 = bsearch_left(nums, target)
+
+idx3 = bisect.bisect_right(nums, target)
+idx4 = bisect.bisect_left(nums, target)
+
+
 nums = [1,1,1,1,2,2,2,3,3,4,5,5,5]
 target = 1
 res = search_leftmost(nums, target)
