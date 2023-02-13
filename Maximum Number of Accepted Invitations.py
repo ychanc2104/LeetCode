@@ -22,3 +22,26 @@ def maximumInvitations(grid: List[List[int]]) -> int:
         visited = set()  # attempted assigning girl
         dfs(i) # O(NM)
     return len(memo)
+
+
+# backtracking(TLE)
+def maximumInvitations(grid: List[List[int]]) -> int:
+    n, m = len(grid), len(grid[0])
+    visited = set()
+    res = 0
+
+    def backtrack(i):
+        nonlocal res
+        if i == n:
+            res = max(res, len(visited))
+            return
+
+        for g in range(m):
+            if grid[i][g] and g not in visited:
+                visited.add(g)
+                backtrack(i + 1)
+                visited.remove(g)
+        backtrack(i + 1)
+
+    backtrack(0)
+    return res
