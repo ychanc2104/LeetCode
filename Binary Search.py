@@ -113,7 +113,7 @@ def search_rightmost3(nums, target) -> int:
 import bisect
 
 
-def bsearch_right(nums, target): # bissect_right
+def bsearch_right(nums, target): # bisect_right
     L, R = 0, len(nums) - 1
     while L <= R:
         mid = (L + R) // 2
@@ -123,7 +123,7 @@ def bsearch_right(nums, target): # bissect_right
             L = mid + 1
     return L  # [0,n]
 
-def bsearch_left(nums, target): # bissect_right
+def bsearch_left(nums, target): # bissect_left
     L, R = 0, len(nums) - 1
     while L <= R:
         mid = (L + R) // 2
