@@ -45,7 +45,7 @@ def trap2(height) -> int:
     return res
 
 
-# use stack, TC:O(N), SC:O(N)
+# use monotonic stack, TC:O(N), SC:O(N)
 def trap3(height) -> int:
     # stack to store each index
     stack = []
@@ -63,4 +63,20 @@ def trap3(height) -> int:
             width = i - stack[-1] - 1
             res += h * width
         stack.append(i)
+    return res
+
+# use monotonic stack, TC:O(N), SC:O(N)
+def trap4(height) -> int:
+    # stack, store idx if height
+    stack = []
+    res = 0
+    for i in range(len(height)):
+        h = height[i]
+        while stack and h > height[stack[-1]]:
+            idx = stack.pop()
+            if stack:
+                wall_idx = stack[-1]
+                res += (i - wall_idx - 1) * (min(h, height[wall_idx]) - height[idx])
+        stack.append(i)
+
     return res
