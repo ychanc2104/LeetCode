@@ -1,5 +1,9 @@
 # https://leetcode.com/problems/longest-valid-parentheses/
 # https://leetcode.com/problems/longest-valid-parentheses/discuss/1139982/Python-short-dp-explained
+# https://leetcode.com/problems/longest-valid-parentheses/solutions/1139982/python-short-dp-explained/
+
+
+import functools
 
 # first thought, use stack and two pass, TC:O(n), SC:O(n)
 def longestValidParentheses(s: str) -> int:
@@ -83,3 +87,28 @@ def longestValidParentheses3(s: str) -> int:
             # initialize
             L, R = 0, 0
     return res
+
+# top-down dp, TC:O(N), SC:O(N)
+def longestValidParentheses4(s: str) -> int:
+    @functools.lru_cache(None)
+    def helper(i): # longest res end at i (must include i)
+        if i == -1 or s[i] == '(': # no anwser can be end with '('
+            return 0
+        l = helper(i-1)
+        if i-l-1 >= 0 and s[i-l-1] == '(':
+            return helper(i-1) + helper(i-1-l-1) + 2
+        return 0
+    if not s: return 0
+    return max(helper(i) for i in range(len(s)))
+
+
+# bottom-up dp, TC:O(N), SC:O(N)
+def longestValidParentheses5(s: str) -> int:
+    n = len(s)
+    dp = [0] * n # dp[i]: longest res end and include index i
+    for i in range(1, n):
+        if s[i] == '(': continue
+        l = dp[i-1] # i-l-2 i-l-1 l(length) i
+        if i-1-l>=0 and s[i-1-l] == '(':
+            dp[i] = dp[i-1] + dp[i-1-l-1] + 2
+    return max(dp) if s else 0
