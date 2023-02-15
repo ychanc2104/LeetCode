@@ -52,7 +52,47 @@ def solveSudoku(board) -> None:
 
     dfs()
 
+# backtracking + dfs, TC:O((9!)^9) each row, col or box of first grid with 9 choices and then 8,7,6,...1. There are 9 cols, rows or boxes in total., SC:O(81)
+def solveSudoku2(board) -> None:
+    """
+    Do not return anything, modify board in-place instead.
+    """
+    # box: 0-8, row: 0-8, col: 0-8
+    box = collections.defaultdict(set)  # c//3+3r
+    row = collections.defaultdict(set)  # r
+    col = collections.defaultdict(set)  # c
+    empty_cells = []
+    for i in range(9):
+        for j in range(9):
+            cell = board[i][j]
+            if cell == '.':
+                empty_cells.append((i, j))
+                continue
+            row[i].add(cell)
+            col[j].add(cell)
+            box[j // 3 + 3 * (i // 3)].add(cell)
 
-board = [["5","3",".",".","7",".",".",".","."],["6",".",".","1","9","5",".",".","."],[".","9","8",".",".",".",".","6","."],["8",".",".",".","6",".",".",".","3"],["4",".",".","8",".","3",".",".","1"],["7",".",".",".","2",".",".",".","6"],[".","6",".",".",".",".","2","8","."],[".",".",".","4","1","9",".",".","5"],[".",".",".",".","8",".",".","7","9"]]
+    # print(empty_cells)
+    def backtrack():
+        if not empty_cells:
+            return
 
-solveSudoku(board)
+        r, c = empty_cells[-1]
+
+        for i in ('1', '2', '3', '4', '5', '6', '7', '8', '9'):
+            if i in row[r] or i in col[c] or i in box[c // 3 + 3 * (r // 3)]:
+                continue
+            empty_cells.pop()
+            board[r][c] = i
+            row[r].add(i)
+            col[c].add(i)
+            box[c // 3 + 3 * (r // 3)].add(i)
+            backtrack()
+            if empty_cells:  # already filled all
+                empty_cells.append((r, c))
+                board[r][c] = '.'
+                row[r].remove(i)
+                col[c].remove(i)
+                box[c // 3 + 3 * (r // 3)].remove(i)
+
+    backtrack()
