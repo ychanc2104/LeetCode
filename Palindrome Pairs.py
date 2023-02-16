@@ -31,3 +31,23 @@ def palindromePairs(words):
             if word_reverse[j:] in hashmap and word_reverse[:j] == word_reverse[:j][::-1]:
                 res.append([i, hashmap[word_reverse[j:]]])
     return res
+
+
+
+# TC:O(nk^2), SC:O(nk)
+def palindromePairs2(words):
+    memo = {word:i for i, word in enumerate(words)}
+    n = len(words) # may contain ''
+    res = []
+    for i in range(n):
+        word = words[i][::-1] # lls => sll
+        for j in range(len(word)+1):
+            target_word = word[j:] # (sll,''), (ll,s), (l,sl) (s,'')
+            center = word[:j]
+            # len of words[i] >= words[j]
+            if target_word in memo and i!=memo[target_word] and center == center[::-1]:
+                res.append([i, memo[target_word]])
+            # len of words[i] < words[j]
+            if target_word and target_word == target_word[::-1] and center in memo:
+                res.append([memo[center], i])
+    return res
