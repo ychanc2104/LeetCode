@@ -36,18 +36,18 @@ def palindromePairs(words):
 
 # TC:O(nk^2), SC:O(nk)
 def palindromePairs2(words):
-    memo = {word:i for i, word in enumerate(words)}
-    n = len(words) # may contain ''
+    memo = {word: i for i, word in enumerate(words)}
+    n = len(words)  # may contain ''
     res = []
     for i in range(n):
-        word = words[i][::-1] # lls => sll
-        for j in range(len(word)+1):
-            target_word = word[j:] # (sll,''), (ll,s), (l,sl) (s,'')
-            center = word[:j]
-            # len of words[i] >= words[j]
-            if target_word in memo and i!=memo[target_word] and center == center[::-1]:
-                res.append([i, memo[target_word]])
-            # len of words[i] < words[j]
-            if target_word and target_word == target_word[::-1] and center in memo:
-                res.append([memo[center], i])
+        word = words[i][::-1]  # lls => sll
+        for j in range(len(word) + 1):
+            prefix = word[:j]  # '', s , sl, sll
+            suffix = word[j:]  # sll, ll,  l, ''
+            # (i, j), len words[i] >= words[j], ex: abcd find dcba
+            if suffix in memo and i != memo[suffix] and prefix == prefix[::-1]:  # get '' edge case if '' in memo
+                res.append([i, memo[suffix]])
+            # (j, i), len words[i] > words[j], suffix != '' to prevent duplicates, ex: sssll find lls
+            if suffix and prefix in memo and suffix == suffix[::-1]:
+                res.append([memo[prefix], i])
     return res
