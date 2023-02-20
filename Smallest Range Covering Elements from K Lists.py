@@ -29,3 +29,21 @@ def smallestRange(nums):
             # TC:O(logk)
             heapq.heappush(compare_list, (nums[i][ii + 1], i, ii + 1))
     return res
+
+
+# TC:O(nlogk) n is min length in nums and k is length of nums, SC: O(nk)
+def smallestRange2(nums):
+    compare = [(nums[k][0], k, 0) for k in range(len(nums))]
+    heapq.heapify(compare)
+    res = [min(compare, key=lambda x:x[0])[0], max(compare, key=lambda x:x[0])[0]]
+    curMax = res[1]
+    while True:
+        num, k, i = heapq.heappop(compare)
+        if i == len(nums[k])-1: # reach end
+            break
+        i += 1
+        curMax = max(curMax, nums[k][i])
+        heapq.heappush(compare, (nums[k][i], k, i))
+        if res[1] - res[0] > curMax - compare[0][0]:
+            res = [compare[0][0], curMax]
+    return res
