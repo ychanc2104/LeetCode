@@ -42,3 +42,22 @@ def firstMissingPositive2(nums) -> int:
         if nums[i] <= n:
             return i+1
     return n+1
+
+# TC:O(n), SC:O(1)
+def firstMissingPositive3(nums) -> int:
+    # if len(nums) is N, answer must in [1,N+1]
+    n = len(nums)
+    flagN = False
+    for i, num in enumerate(nums):
+        if num < 0 or num >= n:
+            nums[i] = 0
+            if num == n:
+                flagN = True
+    # print(nums)
+    for i, num in enumerate(nums):
+        nums[(num) % (n + 1)] += n + 1
+
+    for i in range(1, n):  # check answer from 1 to n-1
+        if nums[i] < n:
+            return i
+    return n + 1 if flagN else n  # check n and n+1
