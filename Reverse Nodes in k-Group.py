@@ -71,3 +71,34 @@ def reverseKGroup2(head: Optional[ListNode], k: int) -> Optional[ListNode]:
     if ktail:
         ktail.next = head
     return prev if prev else head
+
+
+# iterative method, TC:O(N), SC:O(1)
+def reverseKGroup2(head: Optional[ListNode], k: int) -> Optional[ListNode]:
+    dummy = head
+    ktail = None
+    res = None
+    while dummy:
+        count = 0
+        while dummy and count < k:
+            dummy = dummy.next
+            count += 1
+        # 1->2->3
+        if count != k:
+            break
+        dummy2 = head
+        R = None
+        for i in range(k):
+            dummy2_next = dummy2.next
+            dummy2.next = R
+            R = dummy2
+            dummy2 = dummy2_next
+        if not res: # store res
+            res = R
+        if ktail: # connect
+            ktail.next = R
+        ktail = head
+        head = dummy
+    if head:
+        ktail.next = head
+    return res if res else head # no need to reverse => return head
