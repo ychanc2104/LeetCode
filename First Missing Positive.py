@@ -58,6 +58,6 @@ def firstMissingPositive3(nums) -> int:
         nums[(num) % (n + 1)] += n + 1
 
     for i in range(1, n):  # check answer from 1 to n-1
-        if nums[i] < n:
+        if nums[i] < n+1:
             return i
     return n + 1 if flagN else n  # check n and n+1
