@@ -24,3 +24,23 @@ def getLengthOfOptimalCompression(s: str, k: int) -> int:
         return min(keep, delete)
 
     return dp(0, k, '', 0)
+
+
+
+def getLengthOfOptimalCompression2(s: str, k: int) -> int:
+    @functools.lru_cache(None)
+    def helper(i, k, prev='', count=0):
+        if i == len(s):
+            return 0
+        char = s[i]
+        res1 = res2 = res3 = float('inf')
+        if prev == char:
+            res1 = helper(i+1, k, prev, count+1) + (1 if count==1 or count == 9 or count == 99 else 0)
+        else:
+            # delete
+            if k > 0:
+                res2 = helper(i+1, k-1, prev, count)
+            res3 = helper(i+1, k, char, 1) + 1
+        return min(res1, res2, res3)
+
+    return helper(0, k)
