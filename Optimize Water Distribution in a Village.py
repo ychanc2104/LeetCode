@@ -29,3 +29,29 @@ def minCostToSupplyWater(n: int, wells: List[int], pipes: List[List[int]]) -> in
             count -= 1
         if count == 1:
             return res
+
+# minimum spanning tree + trick(add 0 node into pipes), Kruskal's algorithm, TC:O((N+M)log(N+M)) M is len of pipes, SC:O(N+M)
+def minCostToSupplyWater2(n: int, wells: List[int], pipes: List[List[int]]) -> int:
+    def find(x):
+        if parents[x] != x:
+            parents[x] = find(parents[x])
+        return parents[x]
+
+    def union(x, y):
+        px, py = find(x), find(y)
+        parents[px] = py
+
+    parents = [i for i in range(n + 1)]
+
+    for i, well in enumerate(wells):
+        pipes.append([0, i + 1, well])
+
+    pipes.sort(key=lambda x: x[2])
+    res = 0
+    for a, b, cost in pipes:
+        pa, pb = find(a), find(b)
+        if pa == pb:
+            continue
+        res += cost
+        union(pa, pb)
+    return res
