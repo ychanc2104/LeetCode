@@ -29,7 +29,7 @@ def minCost2(maxTime: int, edges: List[List[int]], passingFees: List[int]) -> in
     n = len(passingFees)
     heaps = [(passingFees[0], 0, 0)] # fee,time,node
     times = [float("inf")] * n # min time of each node, TC:O(N), SC:O(N)
-    costs = [float("inf")] * n # min cost of each node
+    times[0] = 0
     # put less time and less cost into heaps
     while heaps: # TC:O(MlogM), SC:O(M)
         fee, time, node = heapq.heappop(heaps)
@@ -39,7 +39,4 @@ def minCost2(maxTime: int, edges: List[List[int]], passingFees: List[int]) -> in
             if times[nei] > time + t: # decrease time
                 heapq.heappush(heaps, (fee + passingFees[nei], time + t, nei))
                 times[nei] = time + t # update min times
-            elif costs[nei] > fee + passingFees[nei]:
-                heapq.heappush(heaps, (fee + passingFees[nei], time + t, nei))
-                costs[nei] = fee + passingFees[nei]
     return -1
