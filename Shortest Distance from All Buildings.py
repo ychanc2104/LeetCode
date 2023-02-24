@@ -101,3 +101,38 @@ def shortestDistance3(grid: List[List[int]]) -> int:
             if dist[i][j][1] == n_buildings:
                 res = min(res, dist[i][j][0])
     return res if res != float('inf') else -1
+
+
+# bfs and count from buildings, TC:O(N^2M^2), SC:O(NM)
+def shortestDistanceˋ(grid: List[List[int]]) -> int:
+    m, n = len(grid), len(grid[0])
+    starts = []
+    for i in range(m):
+        for j in range(n):
+            if grid[i][j] == 1:
+                starts.append((i, j))
+
+    dists = [[0] * n for _ in range(m)]
+    visited_all = None
+    for r, c in starts:
+        visited = set()
+        queue = collections.deque([(r, c, 0)])
+        while queue:
+            r, c, step = queue.popleft()
+            for rn, cn in ((r+1,c),(r,c+1),(r-1,c),(r,c-1)):
+                if not 0<=rn<m or not 0<=cn<n or grid[rn][cn] in [1,2] or (rn,cn) in visited:
+                    continue
+                visited.add((rn, cn))
+                dists[rn][cn] += step+1
+                queue.append((rn, cn, step+1))
+        if visited_all is None:
+            visited_all = visited
+        else:
+            visited_all &= visited
+        # print(visited_all)
+    res = float('inf')
+    for i in range(m):
+        for j in range(n):
+            if dists[i][j] == 0 or (i,j) not in visited_all: continue
+            res = min(res, dists[i][j])
+    return res if res != float('inf') else -1
