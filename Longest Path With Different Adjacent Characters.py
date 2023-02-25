@@ -54,3 +54,32 @@ def longestPath2(parent: List[int], s: str) -> int:
 
     dfs()
     return res
+
+# dfs, TC:O(N) w/o sort, SC:O(N)
+def longestPath3(parent: List[int], s: str) -> int:
+    graph = collections.defaultdict(list)
+    for i, p in enumerate(parent):
+        if p == -1: continue
+        graph[p].append(i)
+    # print(graph)
+    res = 1
+
+    def dfs(node):
+        nonlocal res
+
+        first = second = 0
+        for nei in graph[node]:
+            if s[nei] == s[node]:
+                dfs(nei)
+            else:
+                x = dfs(nei)
+                if x > first:
+                    first, second = x, first
+                elif x > second:
+                    second = x
+
+        res = max(res, first + second + 1)
+        return (first + 1)
+
+    dfs(0)
+    return res
