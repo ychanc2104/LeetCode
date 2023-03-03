@@ -104,7 +104,7 @@ def shortestDistance3(grid: List[List[int]]) -> int:
 
 
 # bfs and count from buildings, TC:O(N^2M^2), SC:O(NM)
-def shortestDistanceˋ(grid: List[List[int]]) -> int:
+def shortestDistance4(grid: List[List[int]]) -> int:
     m, n = len(grid), len(grid[0])
     starts = []
     for i in range(m):
