@@ -50,3 +50,29 @@ def minJumps2(arr: List[int]) -> int:
             if nei in visited: continue
             visited.add(nei)
             queue.append((nei, step + 1))
+
+# BFS, TC:O(N), SC:O(N)
+def minJumps3(arr: List[int]) -> int:
+
+    jump = collections.defaultdict(list)
+    n = len(arr)
+    for i in range(n):
+        jump[arr[i]].append(i)
+    queue = collections.deque([(0, 0)])  # idx, step
+    visited = [True] + [False] * (n - 1)
+
+    while queue:
+
+        idx, step = queue.popleft()
+        if idx == n - 1:
+            return step
+        for nei in [idx - 1, idx + 1]:
+            if not 0 <= nei < n or visited[nei]: continue
+            visited[nei] = True
+            queue.append((nei, step + 1))
+
+        while jump[arr[idx]]:
+            nei = jump[arr[idx]].pop()
+            if visited[nei]: continue
+            visited[nei] = True
+            queue.append((nei, step + 1))
