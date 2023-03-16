@@ -59,24 +59,24 @@ def possibleBipartition2(n: int, dislikes: List[List[int]]) -> bool:
 
 # BFS, TC:O(N+M), SC:O(N+M)
 def possibleBipartition3(n: int, dislikes: List[List[int]]) -> bool:
-    graph = {i:[] for i in range(n+1)} # SC:O(M)
-    for a,b in dislikes:
+    graph = {i: [] for i in range(n + 1)}  # SC:O(M)
+    for a, b in dislikes:
         graph[a].append(b)
         graph[b].append(a)
-    colors = [-1] * (n+1) # 0,1,-1 0,1 are the two groups
-    for i in range(1, n+1):
+    colors = [0] * (n + 1)  # 0,1,-1 0,1 are the two groups
+    for i in range(1, n + 1):
         # do bfs or dfs and start coloring
-        if colors[i] != -1: continue
+        if colors[i]: continue
         colors[i] = 1
         queue = collections.deque([i])
         while queue:
             node = queue.popleft()
             for nei in graph[node]:
-                if colors[node] == colors[nei]: # should not be in same group => conflict
+                if colors[node] == colors[nei]:  # should not be in same group => conflict
                     return False
-                if colors[nei] != -1: continue
-                colors[nei] = 1 if colors[node]==0 else 0 # 1 - colors[node]
-                queue.append(nei)
+                if not colors[nei]:  # not coloring yet
+                    colors[nei] = -colors[node]
+                    queue.append(nei)
     return True
 
 
