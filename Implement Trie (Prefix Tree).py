@@ -2,7 +2,37 @@
 # https://leetcode.com/problems/implement-trie-prefix-tree/discuss/1509720/C%2B%2BPython-208.-Implement-Trie-(Prefix-Tree)-Clean-and-Concise
 from collections import defaultdict
 
+# use dict only
 class Trie:
+
+    def __init__(self):
+        self.root = {}
+
+    def insert(self, word: str) -> None:
+        root = self.root
+        for c in word:
+            if c not in root:
+                root[c] = {}
+            root = root[c]
+        root['#'] = True
+
+    def search(self, word: str) -> bool:
+        root = self.root
+        for c in word:
+            if c not in root:
+                return False
+            root = root[c]
+        return '#' in root
+
+    def startsWith(self, prefix: str) -> bool:
+        root = self.root
+        for c in prefix:
+            if c not in root:
+                return False
+            root = root[c]
+        return True
+
+class Trie2:
     def __init__(self):
         self.children = defaultdict(Trie) # generate Trie class if key not exist
         self.isWord = False
@@ -37,7 +67,7 @@ class TrieNode:
         self.children = {}
         self.isWord = False
 
-class Trie2:
+class Trie3:
     def __init__(self):
         self.root = TrieNode()
 
