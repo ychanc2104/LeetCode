@@ -4,10 +4,42 @@
 
 import collections
 
+
+
 class WordDictionary:
 
     def __init__(self):
-        self.children = collections.defaultdict(WordDictionary)
+        self.root = {}
+
+    def addWord(self, word: str) -> None:
+        root = self.root
+        for c in word:
+            if c not in root:
+                root[c] = {}
+            root = root[c]
+        root['#'] = True
+
+    def search(self, word: str) -> bool:
+        root = self.root
+        def dfs(i, root):
+            if i == len(word):
+                return root.get('#', False)
+            if word[i] == '.':
+                for c2 in root.keys():
+                    if c2 == '#': continue
+                    if dfs(i+1, root[c2]):
+                        return True
+            elif word[i] in root:
+                return dfs(i+1, root[word[i]])
+            return False
+
+        return dfs(0, root)
+
+
+class WordDictionary2:
+
+    def __init__(self):
+        self.children = collections.defaultdict(WordDictionary2)
         self.isWord = False
 
     def addWord(self, word: str) -> None:
@@ -50,7 +82,7 @@ class TrieNode:
         self.isWord = False
 
 
-class WordDictionary2:
+class WordDictionary3:
 
     def __init__(self):
         self.root = TrieNode()
@@ -98,7 +130,7 @@ class TrieNode:
         self.hashmap = {}
         self.end = False
 
-class WordDictionary3:
+class WordDictionary4:
 
     def __init__(self):
         self.root = TrieNode()
@@ -130,7 +162,7 @@ class WordDictionary3:
         return dfs(0, self.root)
 
 
-class WordDictionary:
+class WordDictionary5:
 
     def __init__(self):
         self.children = collections.defaultdict(WordDictionary)
@@ -161,7 +193,7 @@ class WordDictionary:
         return helper(0, node)
 
 # add max_word_length to prevent TLE
-class WordDictionary:
+class WordDictionary6:
 
     def __init__(self):
         self.children = collections.defaultdict(WordDictionary)
