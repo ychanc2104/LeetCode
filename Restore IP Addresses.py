@@ -48,3 +48,29 @@ def restoreIpAddresses2(s: str) -> List[str]:
             ip.pop()
     backtrack(0)
     return res
+
+# backtracking, TC:O(N3^N) can separate into N integers and each integer can have 1,2,3 digits(3), SC:O(N)
+def restoreIpAddresses3(s: str) -> List[str]:
+    if len(s) > 12:
+        return []
+    res = []
+    ip = []
+
+
+    def backtrack(i):
+        if i == len(s):
+            if len(ip) == 4:
+                res.append('.'.join(ip))  # TC:O(N), N integers
+            return
+
+        for size in range(1, 4):  # use 1,2,3 digits
+            sub = s[i:i + size]
+            if len(sub) != size or (size > 1 and s[i] == '0') or int(sub) > 255 or len(ip) == 4:
+                continue
+            ip.append(sub)
+            backtrack(i + size)
+            ip.pop()
+
+
+    backtrack(0)
+    return res
