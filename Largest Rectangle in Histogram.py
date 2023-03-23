@@ -12,3 +12,16 @@ def largestRectangleArea(heights) -> int:
             ans = max(ans, H * W)
         stack.append(i)
     return ans
+
+
+# monotonic increasing stack, TC:O(n), SC:O(n)
+def largestRectangleArea2(heights) -> int:
+    res = 0
+    stack = [] # index
+    for i,h in enumerate(heights + [-1]):
+        while stack and h < heights[stack[-1]]:
+            height = heights[stack.pop()]
+            width = i-stack[-1]-1 if stack else i
+            res = max(res, width*height)
+        stack.append(i)
+    return res
