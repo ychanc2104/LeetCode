@@ -22,8 +22,7 @@ def minPathSum2(grid: List[List[int]]) -> int:
     dp = [0] * m
     dp[0] = grid[0][0]
     for i in range(n):
-        dp_prev = dp.copy()
         for j in range(m):
             if (i,j) == (0,0): continue
-            dp[j] = min(dp[j-1] if j > 0 else float('inf'), dp_prev[j] if i > 0 else float('inf')) + grid[i][j]
+            dp[j] = min(dp[j-1] if j > 0 else float('inf'), dp[j] if i > 0 else float('inf')) + grid[i][j]
     return dp[-1]
