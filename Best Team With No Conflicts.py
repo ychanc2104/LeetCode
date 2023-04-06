@@ -24,7 +24,7 @@ def bestTeamScore(scores: List[int], ages: List[int]) -> int:
 
 
 # bottom-up dp, TC:O(N^2), SC:O(N)
-def bestTeamScore(scores: List[int], ages: List[int]) -> int:
+def bestTeamScore2(scores: List[int], ages: List[int]) -> int:
     people = sorted([(age,score) for age,score in zip(ages,scores)])
     n = len(scores)
     dp = [0] * n # dp[i]: max score end with i
@@ -34,3 +34,15 @@ def bestTeamScore(scores: List[int], ages: List[int]) -> int:
                 dp[i] = max(dp[i], dp[j] + people[i][1])
     return max(dp)
 
+
+# bottom-up dp, TC:O(N^2), SC:O(N)
+def bestTeamScore3(scores: List[int], ages: List[int]) -> int:
+    people = sorted([(age,score) for age,score in zip(ages,scores)])
+    n = len(scores)
+    dp = [0] * n # dp[i]: max score end with i
+    for i in range(n):
+        dp[i] = people[i][1]
+        for j in range(i): # prev
+            if people[i][1]>=people[j][1]:
+                dp[i] = max(dp[i], dp[j] + people[i][1])
+    return max(dp)
