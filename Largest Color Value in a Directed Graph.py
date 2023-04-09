@@ -25,3 +25,69 @@ def largestPathValue(colors: str, edges: List[List[int]]) -> int:
             if indegrees[nei] == 0:
                 queue.append(nei)  #
     return max(c for cnt in dp for c in cnt) if count == 0 else -1
+
+
+# dfs, TC:O(N+M), SC:O(N+M)
+def largestPathValue2(colors: str, edges: List[List[int]]) -> int:
+
+    graph = collections.defaultdict(list)
+    for a,b in edges:
+        graph[a].append(b)
+    n = len(colors)
+    counter = [[0]*26 for _ in range(n)] # counter[i]: all possible max frequency start with i
+    visited = [False] * n
+    inPath = [False] * n
+    def dfs(node):
+        if inPath[node]:
+            return float('inf')
+        if visited[node]: # use cache
+            return counter[node][ord(colors[node]) - ord('a')]
+        inPath[node] = True
+        visited[node] = True
+        for nei in graph[node]:
+            if dfs(nei) == float('inf'):
+                return float('inf')
+            for i in range(26):
+                counter[node][i] = max(counter[node][i], counter[nei][i])
+
+        counter[node][ord(colors[node]) - ord('a')] += 1
+        inPath[node] = False
+        return max(counter[node])
+
+    res = 0
+    for i in range(n):
+        res = max(res, dfs(i))
+    return res if res != float('inf') else -1
+
+# dfs, TC:O(N+M), SC:O(N+M)
+def largestPathValue3(colors: str, edges: List[List[int]]) -> int:
+
+    graph = collections.defaultdict(list)
+    for a, b in edges:
+        graph[a].append(b)
+    n = len(colors)
+    counter = [collections.Counter() for _ in range(n)]  # max counter start with i
+    visited = [False] * n
+    inPath = [False] * n
+
+    def dfs(node):
+        if inPath[node]:
+            return float('inf')
+        if visited[node]:  # use cache
+            return counter[node][colors[node]]
+        inPath[node] = True
+        visited[node] = True
+
+        for nei in graph[node]:
+            if dfs(nei) == float('inf'):
+                return float('inf')
+            for k in counter[nei].keys():  # update counter[node]
+                counter[node][k] = max(counter[node][k], counter[nei][k])
+        counter[node][colors[node]] += 1  # post-order
+        inPath[node] = False
+        return max(counter[node].values())
+
+    res = 0
+    for i in range(n):
+        res = max(res, dfs(i))
+    return res if res != float('inf') else -1
