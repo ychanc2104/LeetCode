@@ -55,5 +55,40 @@ def longestPalindromeSubseq3(s: str) -> int:
     # print(dp)
     return dp[0][-1]
 
+# bottom-up dp, TC:O(N^2), SC:O(N^2) for cache
+def longestPalindromeSubseq4(s: str) -> int:
+    # dp[i][j]: longest Palindromic Subsequence in s[i:j+1]
+    n = len(s)
+    dp = [[0] * n for _ in range(n)]
+    # dp[i][j] = dp[i+1][j-1] + (2 if s[i]==s[j] else 0)
+    for i in range(n-1,-1,-1):
+        dp[i][i] = 1
+        for j in range(i+1,n):
+            dp[i][j] = max(dp[i+1][j], dp[i][j-1], dp[i+1][j-1] + (2 if s[i]==s[j] else 0))
+    # print(dp)
+    return dp[0][-1]
+
+# space-optimized bottom-up dp, TC:O(N^2), SC:O(N) for cache
+def longestPalindromeSubseq5(s: str) -> int:
+    # dp[i][j]: longest Palindromic Subsequence in s[i:j+1]
+    n = len(s)
+    dp = [0] * n
+    # prev = 0
+    # dp[i][j] = dp[i+1][j-1] + (2 if s[i]==s[j] else 0)
+    for i in range(n-1,-1,-1):
+        dp[i] = 1
+        prev = 0
+        for j in range(i+1,n):
+            temp = dp[j]
+            if s[i] == s[j]:
+                dp[j] = prev + 2
+            else:
+                dp[j] = max(dp[j], dp[j-1])
+            # dp[j] = max(dp[j], dp[j-1], prev + (2 if s[i]==s[j] else 0))
+            prev = temp
+        # print(dp)
+    return dp[-1]
+
+
 s = "euazbipzncptldueeuechubrcourfpftcebikrxhybkymimgvldiwqvkszfycvqyvtiwfckexmowcxztkfyzqovbtmzpxojfofbvwnncajvrvdbvjhcrameamcfmcoxryjukhpljwszknhiypvyskmsujkuggpztltpgoczafmfelahqwjbhxtjmebnymdyxoeodqmvkxittxjnlltmoobsgzdfhismogqfpfhvqnxeuosjqqalvwhsidgiavcatjjgeztrjuoixxxoznklcxolgpuktirmduxdywwlbikaqkqajzbsjvdgjcnbtfksqhquiwnwflkldgdrqrnwmshdpykicozfowmumzeuznolmgjlltypyufpzjpuvucmesnnrwppheizkapovoloneaxpfinaontwtdqsdvzmqlgkdxlbeguackbdkftzbnynmcejtwudocemcfnuzbttcoew"
 res = longestPalindromeSubseq(s)
