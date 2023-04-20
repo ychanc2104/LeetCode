@@ -79,3 +79,18 @@ def widthOfBinaryTree4(root: Optional[TreeNode]) -> int:
     dfs(root)
     # print(index_table)
     return max(max(w) - min(w) + 1 for w in index_table.values())
+
+# dfs, TC:O(N), SC:O(W)
+def widthOfBinaryTree5(root: Optional[TreeNode]) -> int:
+    memo = []
+    def helper(root, depth, i):
+        if not root:
+            return 0
+        if len(memo) < depth+1:
+            memo.append(i)
+        memo[depth] = min(memo[depth], i)
+        left = helper(root.left, depth+1, 2*i+1)
+        right = helper(root.right, depth+1, 2*i+2)
+        return max(i - memo[depth] + 1, left, right)
+
+    return helper(root, 0, 0)
