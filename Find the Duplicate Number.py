@@ -44,17 +44,13 @@ def findDuplicate3(nums) -> int:
 
 # count and binary search, TC:O(nlogn), SC:O(1)
 def findDuplicate4(nums) -> int:
-    def countNum(num):
-        res = 0
-        for n in nums:
-            res += 1 if n<=num else 0
-        return res
-    # 1,3,4,5
-    L, R = 1, len(nums)-1 # [1,n]
+    def count(mid):
+        return len([num for num in nums if num <= mid])
+
+    L, R = 0, len(nums) - 1
     while L <= R:
-        mid = (L + R)//2
-        count = countNum(mid)
-        if count >= mid+1: # move R
+        mid = (L + R) // 2
+        if count(mid) > mid:
             R = mid - 1
         else:
             L = mid + 1
