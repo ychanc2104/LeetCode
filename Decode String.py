@@ -1,5 +1,6 @@
 # https://leetcode.com/problems/decode-string/
 # https://leetcode.com/problems/decode-string/discuss/87662/Python-solution-using-stack
+from functools import lru_cache
 
 
 # use stack, TC:1+2+3+...+N => O(N^2), K is num in s, SC:O(L), L is size of output
@@ -47,3 +48,22 @@ def decodeString2(s: str) -> str:
         else:
             curStr += l
     return curStr
+
+# dp, TC:O(N), SC:O(N)
+def numDecodings(s: str) -> int:
+
+    @lru_cache(None)
+    def helper(i):
+        if i >= len(s):
+            return 1
+
+        if s[i] == "0":
+            return 0
+
+        res = helper(i + 1)
+        if i + 2 <= len(s) and int(s[i:i + 2]) <= 26:
+            res += helper(i + 2)
+
+        return res
+
+    return helper(0)
