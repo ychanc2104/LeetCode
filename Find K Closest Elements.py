@@ -48,3 +48,14 @@ def findClosestElements3(arr, k: int, x: int):
             L = mid + 1
     # array slice, TC:O(k)
     return arr[L:L + k]
+
+def findClosestElements4(arr: List[int], k: int, x: int) -> List[int]:
+    L, R = k, len(arr) - 1
+    while L <= R:
+        mid = (L + R) // 2
+        if arr[mid] - x + arr[mid - k] - x >= 0:
+            R = mid - 1
+        else:
+            L = mid + 1
+
+    return arr[L - k:L]
