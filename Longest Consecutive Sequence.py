@@ -22,7 +22,7 @@ def longestConsecutive2(nums) -> int:
     res = 0
     nums_set = set(nums)  # small to big
     for num in nums_set:
-        # num is sub-array of an answer, skip, ex:skip 2,3,4
+        # do not start if num is not head
         if num - 1 in nums_set:
             continue
         # main loop to get res, start from 1
