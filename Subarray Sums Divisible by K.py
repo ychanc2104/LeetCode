@@ -12,3 +12,15 @@ def subarraysDivByK(nums: List[int], k: int) -> int:
             res += memo[target]
         memo[prefix_sum % k] = memo.get(prefix_sum % k, 0) + 1
     return res
+
+# prefix sum, TC:O(N), SC:O(N)
+def subarraysDivByK2(nums: List[int], k: int) -> int:
+    m = {0: 1}
+    s = 0
+    res = 0
+    for num in nums:
+        s = (s + num) % k
+        res += m.get(s, 0)
+        m[s] = m.get(s, 0) + 1
+
+    return res
